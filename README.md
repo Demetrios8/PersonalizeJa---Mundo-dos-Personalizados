@@ -19,21 +19,71 @@ Desenvolver uma aplicação que facilite o gerenciamento das atividades do ateli
 - Maven
 - Lombok
 
-## Arquitetura
 
-O projeto utiliza **Arquitetura em Camadas**, separando as responsabilidades da aplicação para facilitar a organização, manutenção e evolução do código.
+# Documentação da Arquitetura - Personalize Já
 
-A estrutura está organizada nas seguintes camadas e pacotes:
+## 1. Arquitetura utilizada
 
-- `controller`: comunicação e requisições HTTP.
-- `service`: regras de negócio.
-- `repository`: acesso e persistência dos dados.
-- `model`: entidades do sistema.
-- `dto`: objetos de transferência de dados.
-- `mapper`: conversão entre DTOs e entidades.
-- `enums`: enumerações utilizadas no sistema.
-- `exception`: tratamento de exceções.
-- `config`: configurações da aplicação.
+O projeto Personalize Já utiliza a Arquitetura em Camadas,
+organizando o sistema de acordo com as responsabilidades
+de cada componente.
+
+Essa abordagem separa as regras de negócio, a comunicação
+com o usuário e o acesso aos dados, facilitando a manutenção
+e a evolução da aplicação.
+
+## 2. Organização das camadas
+
+- Controller: recebe e responde às requisições HTTP.
+- Service: concentra as regras de negócio da aplicação.
+- Repository: realiza operações de acesso ao banco de dados.
+- Model: contém as entidades que representam os dados
+  do sistema.
+- DTO: transporta informações entre as camadas.
+- Mapper: realiza conversões entre entidades e DTOs.
+- Enums: define valores fixos utilizados pelo sistema.
+- Exception: concentra o tratamento de exceções.
+- Config: armazena configurações da aplicação.
+
+## 3. Justificativa da escolha
+
+A Arquitetura em Camadas foi escolhida por proporcionar
+uma organização clara do código e separar as
+responsabilidades do sistema.
+
+Essa estrutura facilita:
+
+- A manutenção do código.
+- A identificação e correção de erros.
+- A reutilização de componentes.
+- A implementação de novas funcionalidades.
+- O trabalho simultâneo entre os integrantes da equipe.
+- A realização de testes em diferentes partes da aplicação.
+
+## 4. Tecnologias utilizadas
+
+- Java 21
+- Spring Boot
+- Spring Data JPA
+- Hibernate
+- PostgreSQL
+- Maven
+- Lombok
+
+## 5. Organização da responsabilidade de pagamentos
+
+A funcionalidade de pagamentos está representada pela
+entidade Pagamento, responsável por armazenar o valor,
+a forma de pagamento, o status e a data do registro.
+
+As enumerações FormaPagamento e StatusPagamento
+padronizam os valores aceitos pelo sistema.
+
+O relacionamento entre Pedido e Pagamento utiliza
+ManyToOne na entidade Pagamento, permitindo que um
+pedido possua múltiplos registros de pagamento.
+
+------------------------------------------------
 
 ## Equipe
 
