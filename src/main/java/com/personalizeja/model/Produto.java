@@ -2,6 +2,11 @@ package com.personalizeja.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import java.util.ArrayList;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,12 +42,12 @@ public class Produto {
     @Column(nullable = false)
     private boolean ativo = true;
 
-    // Descomente quando a classe Arte existir:
-    // @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
-    // private List<Arte> artes = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
+    private List<Arte> artes = new ArrayList<>();
 
     protected Produto() {
-        // exigido pelo JPA
+        
     }
 
     public Produto(String nome, String descricao, BigDecimal preco, String codigoBarras) {
