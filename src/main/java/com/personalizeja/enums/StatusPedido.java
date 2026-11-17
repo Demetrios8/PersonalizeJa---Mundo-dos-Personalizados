@@ -1,14 +1,10 @@
+
 package com.personalizeja.enums;
 
 public enum StatusPedido {
-
-        PENDENTE,
-        EM_PRODUCAO,
-        CONCLUIDO,
-        CANCELADO,
-        ENTREGUE
-
-    }
-
-
-
+    PENDENTE,
+    EM_PRODUCAO,
+    CONCLUIDO,
+    CANCELADO,
+    ENTREGUE
+}
