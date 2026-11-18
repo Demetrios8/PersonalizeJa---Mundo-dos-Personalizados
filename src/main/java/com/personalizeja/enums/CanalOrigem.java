@@ -1,4 +1,3 @@
-
 package com.personalizeja.enums;
 
 public enum CanalOrigem {
@@ -6,5 +5,5 @@ public enum CanalOrigem {
     INSTAGRAM,
     SITE,
     PRESENCIAL
-}
 
+}
