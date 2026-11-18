@@ -3,6 +3,7 @@ package com.personalizeja.model;
 
 import com.personalizeja.enums.StatusPedido;
 import com.personalizeja.enums.CanalOrigem;
+import com.personalizeja.enums.StatusAprovacao;
 
 import jakarta.persistence.*;
 
@@ -41,6 +42,9 @@ public class Pedido {
             orphanRemoval = true
     )
     private List<ItemPedido> itens = new ArrayList<>();
+
+    @OneToMany(mappedBy = "pedido")
+    private List<Arte> artes = new ArrayList<>();
 
     protected Pedido() {
     }
@@ -91,12 +95,17 @@ public class Pedido {
         return Collections.unmodifiableList(itens);
     }
 
+    public List<Arte> getArtes() {
+        return Collections.unmodifiableList(artes);
+    }
+
     // Métodos de alteração de estado
 
     public void iniciarProducao() {
 
         verificarStatus(StatusPedido.PENDENTE);
         verificarPossuiItens();
+        verificarArtesAprovadas();
 
         this.status = StatusPedido.EM_PRODUCAO;
     }
@@ -164,6 +173,41 @@ public class Pedido {
         }
     }
 
+    // Gerenciamento das artes
+
+    public void adicionarArte(Arte arte) {
+
+        verificarStatus(StatusPedido.PENDENTE);
+
+        if (arte == null) {
+            throw new IllegalArgumentException(
+                    "A arte não pode ser nula."
+            );
+        }
+
+        if (arte.getPedido() != null &&
+                arte.getPedido() != this) {
+
+            throw new IllegalStateException(
+                    "A arte já pertence a outro pedido."
+            );
+        }
+
+        if (!artes.contains(arte)) {
+            artes.add(arte);
+            arte.definirPedido(this);
+        }
+    }
+
+    public void removerArte(Arte arte) {
+
+        verificarStatus(StatusPedido.PENDENTE);
+
+        if (artes.remove(arte)) {
+            arte.definirPedido(null);
+        }
+    }
+
     // Cálculo do valor total
 
     public BigDecimal calcularValorTotal() {
@@ -190,6 +234,20 @@ public class Pedido {
         if (itens.isEmpty()) {
             throw new IllegalStateException(
                     "O pedido precisa possuir pelo menos um item."
+            );
+        }
+    }
+
+    private void verificarArtesAprovadas() {
+
+        boolean possuiArteNaoAprovada = artes.stream()
+                .anyMatch(arte ->
+                        arte.getStatus() != StatusAprovacao.APROVADA
+                );
+
+        if (possuiArteNaoAprovada) {
+            throw new IllegalStateException(
+                    "Todas as artes do pedido precisam estar aprovadas."
             );
         }
     }

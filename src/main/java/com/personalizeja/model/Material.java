@@ -1,20 +1,14 @@
+
 package com.personalizeja.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.Getter;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
-@Getter
 @Table(name = "materiais")
 public class Material {
 
@@ -43,60 +37,164 @@ public class Material {
     protected Material() {
     }
 
-    public Material(String nome, String descricao, String unidadeMedida, BigDecimal estoqueMinimo) {
-        if (nome == null || nome.isBlank()) {
-            throw new IllegalArgumentException("O nome do material é obrigatório.");
-        }
-        if (unidadeMedida == null || unidadeMedida.isBlank()) {
-            throw new IllegalArgumentException("A unidade de medida é obrigatória.");
-        }
-        if (estoqueMinimo == null || estoqueMinimo.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("O estoque mínimo não pode ser negativo.");
-        }
-        this.nome = nome;
+    public Material(
+            String nome,
+            String descricao,
+            String unidadeMedida,
+            BigDecimal estoqueMinimo) {
+
+        validarNome(nome);
+        validarUnidadeMedida(unidadeMedida);
+        validarEstoqueMinimo(estoqueMinimo);
+
+        this.nome = nome.trim();
         this.descricao = descricao;
-        this.unidadeMedida = unidadeMedida;
+        this.unidadeMedida = unidadeMedida.trim();
         this.estoqueMinimo = estoqueMinimo;
         this.quantidadeEstoque = BigDecimal.ZERO;
     }
 
-    public void atualizarDados(String nome, String descricao, String unidadeMedida) {
-        if (nome == null || nome.isBlank()) {
-            throw new IllegalArgumentException("O nome do material é obrigatório.");
-        }
-        if (unidadeMedida == null || unidadeMedida.isBlank()) {
-            throw new IllegalArgumentException("A unidade de medida é obrigatória.");
-        }
-        this.nome = nome;
+    // Atualização dos dados
+
+    public void atualizarDados(
+            String nome,
+            String descricao,
+            String unidadeMedida) {
+
+        validarNome(nome);
+        validarUnidadeMedida(unidadeMedida);
+
+        this.nome = nome.trim();
         this.descricao = descricao;
-        this.unidadeMedida = unidadeMedida;
+        this.unidadeMedida = unidadeMedida.trim();
     }
 
     public void alterarEstoqueMinimo(BigDecimal novoEstoqueMinimo) {
-        if (novoEstoqueMinimo == null || novoEstoqueMinimo.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("O estoque mínimo não pode ser negativo.");
-        }
+
+        validarEstoqueMinimo(novoEstoqueMinimo);
+
         this.estoqueMinimo = novoEstoqueMinimo;
     }
+
+    // Consultas de estoque
 
     public boolean estaAbaixoDoMinimo() {
         return quantidadeEstoque.compareTo(estoqueMinimo) < 0;
     }
 
-    public MovimentacaoEstoque registrarEntrada(BigDecimal quantidade, String motivo, Usuario usuario) {
-        MovimentacaoEstoque movimentacao = MovimentacaoEstoque.entrada(this, quantidade, motivo, usuario);
-        this.quantidadeEstoque = this.quantidadeEstoque.add(quantidade);
+    // Registro de movimentações
+
+    public MovimentacaoEstoque registrarEntrada(
+            BigDecimal quantidade,
+            String motivo,
+            Usuario usuario) {
+
+        validarQuantidadeMovimentacao(quantidade);
+
+        MovimentacaoEstoque movimentacao =
+                MovimentacaoEstoque.entrada(
+                        this, quantidade, motivo, usuario
+                );
+
+        this.quantidadeEstoque =
+                this.quantidadeEstoque.add(quantidade);
+
         this.movimentacoes.add(movimentacao);
+
         return movimentacao;
     }
 
-    public MovimentacaoEstoque registrarSaida(BigDecimal quantidade, String motivo, Usuario usuario) {
-        MovimentacaoEstoque movimentacao = MovimentacaoEstoque.saida(this, quantidade, motivo, usuario);
+    public MovimentacaoEstoque registrarSaida(
+            BigDecimal quantidade,
+            String motivo,
+            Usuario usuario) {
+
+        validarQuantidadeMovimentacao(quantidade);
+
         if (this.quantidadeEstoque.compareTo(quantidade) < 0) {
-            throw new IllegalStateException("Estoque insuficiente para realizar a saída.");
+            throw new IllegalStateException(
+                    "Estoque insuficiente para realizar a saída."
+            );
         }
-        this.quantidadeEstoque = this.quantidadeEstoque.subtract(quantidade);
+
+        MovimentacaoEstoque movimentacao =
+                MovimentacaoEstoque.saida(
+                        this, quantidade, motivo, usuario
+                );
+
+        this.quantidadeEstoque =
+                this.quantidadeEstoque.subtract(quantidade);
+
         this.movimentacoes.add(movimentacao);
+
         return movimentacao;
+    }
+
+    // Validações
+
+    private void validarNome(String nome) {
+        if (nome == null || nome.isBlank()) {
+            throw new IllegalArgumentException(
+                    "O nome do material é obrigatório."
+            );
+        }
+    }
+
+    private void validarUnidadeMedida(String unidadeMedida) {
+        if (unidadeMedida == null || unidadeMedida.isBlank()) {
+            throw new IllegalArgumentException(
+                    "A unidade de medida é obrigatória."
+            );
+        }
+    }
+
+    private void validarEstoqueMinimo(BigDecimal estoqueMinimo) {
+        if (estoqueMinimo == null ||
+                estoqueMinimo.compareTo(BigDecimal.ZERO) < 0) {
+
+            throw new IllegalArgumentException(
+                    "O estoque mínimo não pode ser negativo."
+            );
+        }
+    }
+
+    private void validarQuantidadeMovimentacao(BigDecimal quantidade) {
+        if (quantidade == null ||
+                quantidade.compareTo(BigDecimal.ZERO) <= 0) {
+
+            throw new IllegalArgumentException(
+                    "A quantidade da movimentação deve ser maior que zero."
+            );
+        }
+    }
+
+    // Getters
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public BigDecimal getQuantidadeEstoque() {
+        return quantidadeEstoque;
+    }
+
+    public String getUnidadeMedida() {
+        return unidadeMedida;
+    }
+
+    public BigDecimal getEstoqueMinimo() {
+        return estoqueMinimo;
+    }
+
+    public List<MovimentacaoEstoque> getMovimentacoes() {
+        return Collections.unmodifiableList(movimentacoes);
     }
 }

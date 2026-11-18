@@ -1,24 +1,14 @@
+
 package com.personalizeja.model;
 
 import com.personalizeja.enums.TipoMovimentacao;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.Getter;
+
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
 @Table(name = "movimentacoes_estoque")
 public class MovimentacaoEstoque {
 
@@ -50,40 +40,142 @@ public class MovimentacaoEstoque {
     protected MovimentacaoEstoque() {
     }
 
-    private MovimentacaoEstoque(Material material, TipoMovimentacao tipo,
-                               BigDecimal quantidade, String motivo, Usuario usuario) {
-        if (material == null) {
-            throw new IllegalArgumentException("O material é obrigatório.");
-        }
-        if (usuario == null) {
-            throw new IllegalArgumentException("O usuário é obrigatório.");
-        }
-        if (tipo == null) {
-            throw new IllegalArgumentException("O tipo da movimentação é obrigatório.");
-        }
-        if (quantidade == null || quantidade.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("A quantidade deve ser maior que zero.");
-        }
-        if (motivo == null || motivo.isBlank()) {
-            throw new IllegalArgumentException("O motivo da movimentação é obrigatório.");
-        }
+    private MovimentacaoEstoque(
+            Material material,
+            TipoMovimentacao tipo,
+            BigDecimal quantidade,
+            String motivo,
+            Usuario usuario) {
+
+        validarMaterial(material);
+        validarUsuario(usuario);
+        validarTipo(tipo);
+        validarQuantidade(quantidade);
+        validarMotivo(motivo);
+
         this.material = material;
         this.tipo = tipo;
         this.quantidade = quantidade;
-        this.motivo = motivo;
+        this.motivo = motivo.trim();
         this.usuario = usuario;
-        this.dataMovimentacao = LocalDateTime.now();
     }
 
-    static MovimentacaoEstoque entrada(Material material, BigDecimal quantidade,
-                                      String motivo, Usuario usuario) {
-        return new MovimentacaoEstoque(material, TipoMovimentacao.ENTRADA,
-                quantidade, motivo, usuario);
+    @PrePersist
+    private void aoCriar() {
+        if (this.dataMovimentacao == null) {
+            this.dataMovimentacao = LocalDateTime.now();
+        }
     }
 
-    static MovimentacaoEstoque saida(Material material, BigDecimal quantidade,
-                                    String motivo, Usuario usuario) {
-        return new MovimentacaoEstoque(material, TipoMovimentacao.SAIDA,
-                quantidade, motivo, usuario);
+    // Métodos de criação
+
+    static MovimentacaoEstoque entrada(
+            Material material,
+            BigDecimal quantidade,
+            String motivo,
+            Usuario usuario) {
+
+        return new MovimentacaoEstoque(
+                material,
+                TipoMovimentacao.ENTRADA,
+                quantidade,
+                motivo,
+                usuario
+        );
+    }
+
+    static MovimentacaoEstoque saida(
+            Material material,
+            BigDecimal quantidade,
+            String motivo,
+            Usuario usuario) {
+
+        return new MovimentacaoEstoque(
+                material,
+                TipoMovimentacao.SAIDA,
+                quantidade,
+                motivo,
+                usuario
+        );
+    }
+
+    // Validações
+
+    private void validarMaterial(Material material) {
+        if (material == null) {
+            throw new IllegalArgumentException(
+                    "O material é obrigatório."
+            );
+        }
+    }
+
+    private void validarUsuario(Usuario usuario) {
+        if (usuario == null) {
+            throw new IllegalArgumentException(
+                    "O usuário é obrigatório."
+            );
+        }
+    }
+
+    private void validarTipo(TipoMovimentacao tipo) {
+        if (tipo == null) {
+            throw new IllegalArgumentException(
+                    "O tipo da movimentação é obrigatório."
+            );
+        }
+    }
+
+    private void validarQuantidade(BigDecimal quantidade) {
+        if (quantidade == null ||
+                quantidade.compareTo(BigDecimal.ZERO) <= 0) {
+
+            throw new IllegalArgumentException(
+                    "A quantidade deve ser maior que zero."
+            );
+        }
+    }
+
+    private void validarMotivo(String motivo) {
+        if (motivo == null || motivo.isBlank()) {
+            throw new IllegalArgumentException(
+                    "O motivo da movimentação é obrigatório."
+            );
+        }
+
+        if (motivo.length() > 500) {
+            throw new IllegalArgumentException(
+                    "O motivo deve ter no máximo 500 caracteres."
+            );
+        }
+    }
+
+    // Getters
+
+    public Long getId() {
+        return id;
+    }
+
+    public TipoMovimentacao getTipo() {
+        return tipo;
+    }
+
+    public BigDecimal getQuantidade() {
+        return quantidade;
+    }
+
+    public LocalDateTime getDataMovimentacao() {
+        return dataMovimentacao;
+    }
+
+    public String getMotivo() {
+        return motivo;
+    }
+
+    public Material getMaterial() {
+        return material;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
     }
 }

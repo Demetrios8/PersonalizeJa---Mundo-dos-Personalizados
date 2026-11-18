@@ -1,7 +1,10 @@
 
 package com.personalizeja.model;
 
+import com.personalizeja.enums.StatusPedido;
+
 import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 
 @Entity
@@ -44,13 +47,22 @@ public class ItemPedido {
             );
         }
 
+        if (!produto.isAtivo()) {
+            throw new IllegalArgumentException(
+                    "Não é possível adicionar um produto desativado."
+            );
+        }
+
         validarQuantidade(quantidade);
         validarPreco(precoUnitario);
+        validarDescricao(descricaoPersonalizacao);
 
         this.produto = produto;
         this.quantidade = quantidade;
         this.precoUnitario = precoUnitario;
-        this.descricaoPersonalizacao = descricaoPersonalizacao;
+        this.descricaoPersonalizacao = normalizarDescricao(
+                descricaoPersonalizacao
+        );
     }
 
     // Getters
@@ -82,17 +94,22 @@ public class ItemPedido {
     // Métodos modificadores
 
     public void alterarQuantidade(Integer quantidade) {
+        verificarPedidoPendente();
         validarQuantidade(quantidade);
         this.quantidade = quantidade;
     }
 
     public void alterarPrecoUnitario(BigDecimal precoUnitario) {
+        verificarPedidoPendente();
         validarPreco(precoUnitario);
         this.precoUnitario = precoUnitario;
     }
 
     public void alterarDescricaoPersonalizacao(String descricao) {
-        this.descricaoPersonalizacao = descricao;
+        verificarPedidoPendente();
+        validarDescricao(descricao);
+
+        this.descricaoPersonalizacao = normalizarDescricao(descricao);
     }
 
     // Cálculo do subtotal
@@ -119,6 +136,32 @@ public class ItemPedido {
 
             throw new IllegalArgumentException(
                     "O preço deve ser maior que zero."
+            );
+        }
+    }
+
+    private void validarDescricao(String descricao) {
+        if (descricao != null && descricao.length() > 500) {
+            throw new IllegalArgumentException(
+                    "A descrição da personalização deve ter no máximo 500 caracteres."
+            );
+        }
+    }
+
+    private String normalizarDescricao(String descricao) {
+        if (descricao == null || descricao.isBlank()) {
+            return null;
+        }
+
+        return descricao.trim();
+    }
+
+    private void verificarPedidoPendente() {
+        if (pedido != null &&
+                pedido.getStatus() != StatusPedido.PENDENTE) {
+
+            throw new IllegalStateException(
+                    "Só é possível alterar itens de pedidos pendentes."
             );
         }
     }

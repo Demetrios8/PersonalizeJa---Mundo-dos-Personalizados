@@ -1,15 +1,16 @@
+
 package com.personalizeja.model;
 
 import com.personalizeja.enums.FormaPagamento;
 import com.personalizeja.enums.StatusPagamento;
+import com.personalizeja.enums.StatusPedido;
+
 import jakarta.persistence.*;
-import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
 @Table(name = "pagamentos")
 public class Pagamento {
 
@@ -28,7 +29,9 @@ public class Pagamento {
     @Column(nullable = false)
     private StatusPagamento statusPagamento;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime dataCriacao;
+
     private LocalDateTime dataPagamento;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,84 +44,62 @@ public class Pagamento {
     public Pagamento(
             BigDecimal valor,
             FormaPagamento formaPagamento,
-            Pedido pedido
-    ) {
-        if (valor == null || valor.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException(
-                    "O valor do pagamento deve ser maior que zero."
-            );
-        }
+            Pedido pedido) {
 
-        if (formaPagamento == null) {
-            throw new IllegalArgumentException(
-                    "A forma de pagamento é obrigatória."
-            );
-        }
-
-        if (pedido == null) {
-            throw new IllegalArgumentException(
-                    "O pedido é obrigatório."
-            );
-        }
+        validarValor(valor);
+        validarFormaPagamento(formaPagamento);
+        validarPedido(pedido);
 
         this.valor = valor;
         this.formaPagamento = formaPagamento;
         this.pedido = pedido;
         this.statusPagamento = StatusPagamento.PENDENTE;
-        this.dataPagamento = LocalDateTime.now();
     }
+
+    @PrePersist
+    private void aoCriar() {
+        this.dataCriacao = LocalDateTime.now();
+    }
+
+    // Atualização dos dados
 
     public void atualizarDados(
             BigDecimal valor,
-            FormaPagamento formaPagamento
-    ) {
-        if (this.statusPagamento != StatusPagamento.PENDENTE) {
-            throw new IllegalStateException(
-                    "Somente pagamentos pendentes podem ser alterados."
-            );
-        }
+            FormaPagamento formaPagamento) {
 
-        if (valor == null || valor.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException(
-                    "O valor do pagamento deve ser maior que zero."
-            );
-        }
+        verificarStatus(StatusPagamento.PENDENTE);
 
-        if (formaPagamento == null) {
-            throw new IllegalArgumentException(
-                    "A forma de pagamento é obrigatória."
-            );
-        }
+        validarValor(valor);
+        validarFormaPagamento(formaPagamento);
 
         this.valor = valor;
         this.formaPagamento = formaPagamento;
     }
 
+    // Métodos de alteração de estado
+
     public void aprovar() {
-        if (this.statusPagamento != StatusPagamento.PENDENTE) {
-            throw new IllegalStateException(
-                    "Somente pagamentos pendentes podem ser aprovados."
-            );
-        }
+
+        verificarStatus(StatusPagamento.PENDENTE);
 
         this.statusPagamento = StatusPagamento.APROVADO;
+        this.dataPagamento = LocalDateTime.now();
     }
 
     public void recusar() {
-        if (this.statusPagamento != StatusPagamento.PENDENTE) {
-            throw new IllegalStateException(
-                    "Somente pagamentos pendentes podem ser recusados."
-            );
-        }
+
+        verificarStatus(StatusPagamento.PENDENTE);
 
         this.statusPagamento = StatusPagamento.RECUSADO;
     }
 
     public void cancelar() {
-        if (this.statusPagamento == StatusPagamento.APROVADO
-                || this.statusPagamento == StatusPagamento.ESTORNADO) {
+
+        if (this.statusPagamento != StatusPagamento.PENDENTE &&
+                this.statusPagamento != StatusPagamento.RECUSADO) {
+
             throw new IllegalStateException(
-                    "Este pagamento não pode ser cancelado."
+                    "Somente pagamentos pendentes ou recusados podem ser cancelados."
             );
         }
 
@@ -126,12 +107,86 @@ public class Pagamento {
     }
 
     public void estornar() {
-        if (this.statusPagamento != StatusPagamento.APROVADO) {
-            throw new IllegalStateException(
-                    "Somente pagamentos aprovados podem ser estornados."
+
+        verificarStatus(StatusPagamento.APROVADO);
+
+        this.statusPagamento = StatusPagamento.ESTORNADO;
+    }
+
+    // Validações
+
+    private void validarValor(BigDecimal valor) {
+
+        if (valor == null ||
+                valor.compareTo(BigDecimal.ZERO) <= 0) {
+
+            throw new IllegalArgumentException(
+                    "O valor do pagamento deve ser maior que zero."
+            );
+        }
+    }
+
+    private void validarFormaPagamento(FormaPagamento formaPagamento) {
+
+        if (formaPagamento == null) {
+            throw new IllegalArgumentException(
+                    "A forma de pagamento é obrigatória."
+            );
+        }
+    }
+
+    private void validarPedido(Pedido pedido) {
+
+        if (pedido == null) {
+            throw new IllegalArgumentException(
+                    "O pedido é obrigatório."
             );
         }
 
-        this.statusPagamento = StatusPagamento.ESTORNADO;
+        if (pedido.getStatus() == StatusPedido.CANCELADO) {
+            throw new IllegalArgumentException(
+                    "Não é possível criar pagamento para um pedido cancelado."
+            );
+        }
+    }
+
+    private void verificarStatus(StatusPagamento esperado) {
+
+        if (this.statusPagamento != esperado) {
+            throw new IllegalStateException(
+                    "Operação não permitida. Status atual: "
+                            + this.statusPagamento
+            );
+        }
+    }
+
+    // Getters
+
+    public Long getId() {
+        return id;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public FormaPagamento getFormaPagamento() {
+        return formaPagamento;
+    }
+
+    public StatusPagamento getStatusPagamento() {
+        return statusPagamento;
+    }
+
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public LocalDateTime getDataPagamento() {
+        return dataPagamento;
+    }
+
+    public Pedido getPedido() {
+        return pedido;
     }
 }
