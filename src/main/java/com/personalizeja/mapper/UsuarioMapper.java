@@ -1,0 +1,31 @@
+package com.personalizeja.mapper;
+
+import org.springframework.stereotype.Component;
+
+import com.personalizeja.dto.UsuarioRequestDTO;
+import com.personalizeja.dto.UsuarioResponseDTO;
+import com.personalizeja.model.Usuario;
+
+@Component
+public class UsuarioMapper {
+
+    public Usuario toEntity(UsuarioRequestDTO dto) {
+        return new Usuario(
+                dto.nome(),
+                dto.email(),
+                dto.senha(),
+                dto.perfil()
+        );
+    }
+
+    // A senha nunca é devolvida na resposta
+    public UsuarioResponseDTO toResponse(Usuario usuario) {
+        return new UsuarioResponseDTO(
+                usuario.getId(),
+                usuario.getNome(),
+                usuario.getEmail(),
+                usuario.getPerfil(),
+                usuario.isAtivo()
+        );
+    }
+}
