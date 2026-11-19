@@ -18,16 +18,21 @@ public class MaterialService {
 
     private final MaterialRepository materialRepository;
     private final MovimentacaoEstoqueRepository movimentacaoRepository;
+    private final UsuarioService usuarioService;
 
     public MaterialService(
             MaterialRepository materialRepository,
-            MovimentacaoEstoqueRepository movimentacaoRepository) {
+            MovimentacaoEstoqueRepository movimentacaoRepository,
+            UsuarioService usuarioService) {
 
         this.materialRepository = materialRepository;
         this.movimentacaoRepository = movimentacaoRepository;
+        this.usuarioService = usuarioService;
     }
 
+    @Transactional
     public Material cadastrarMaterial(Material material) {
+
         if (material == null) {
             throw new IllegalArgumentException(
                     "O material não pode ser nulo."
@@ -37,11 +42,14 @@ public class MaterialService {
         return materialRepository.save(material);
     }
 
+    @Transactional(readOnly = true)
     public List<Material> listarMateriais() {
         return materialRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Material buscarMaterialPorId(Long id) {
+
         if (id == null) {
             throw new IllegalArgumentException(
                     "O ID do material não pode ser nulo."
@@ -54,15 +62,23 @@ public class MaterialService {
                 ));
     }
 
+    @Transactional
     public Material atualizarMaterial(
             Long id,
             String nome,
             String descricao,
-            String unidadeMedida) {
+            String unidadeMedida,
+            BigDecimal estoqueMinimo) {
 
         Material material = buscarMaterialPorId(id);
 
-        material.atualizarDados(nome, descricao, unidadeMedida);
+        material.atualizarDados(
+                nome,
+                descricao,
+                unidadeMedida
+        );
+
+        material.alterarEstoqueMinimo(estoqueMinimo);
 
         return materialRepository.save(material);
     }
@@ -72,9 +88,10 @@ public class MaterialService {
             Long materialId,
             BigDecimal quantidade,
             String motivo,
-            Usuario usuario) {
+            Long usuarioId) {
 
         Material material = buscarMaterialPorId(materialId);
+        Usuario usuario = usuarioService.buscarEntidade(usuarioId);
 
         MovimentacaoEstoque movimentacao =
                 material.registrarEntrada(
@@ -93,9 +110,10 @@ public class MaterialService {
             Long materialId,
             BigDecimal quantidade,
             String motivo,
-            Usuario usuario) {
+            Long usuarioId) {
 
         Material material = buscarMaterialPorId(materialId);
+        Usuario usuario = usuarioService.buscarEntidade(usuarioId);
 
         MovimentacaoEstoque movimentacao =
                 material.registrarSaida(
@@ -109,7 +127,9 @@ public class MaterialService {
         return movimentacaoRepository.save(movimentacao);
     }
 
+    @Transactional(readOnly = true)
     public List<Material> listarMateriaisAbaixoDoMinimo() {
+
         return materialRepository.findAll()
                 .stream()
                 .filter(Material::estaAbaixoDoMinimo)
