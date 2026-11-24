@@ -1,7 +1,7 @@
 package com.personalizeja.mapper;
 
 import com.personalizeja.dto.ProdutoRequest;
-import com.personalizeja.dto.ProdutoResponseDTO;
+import com.personalizeja.dto.ProdutoResponse; // Ajuste para o nome real do seu DTO de resposta
 import com.personalizeja.model.Produto;
 
 public class ProdutoMapper {
@@ -14,10 +14,10 @@ public class ProdutoMapper {
             return null;
         }
         return new Produto(
-                dto.getNome(),       // Usando getNome()
-                dto.getDescricao(),  // Usando getDescricao()
-                dto.getPreco(),      // Usando getPreco()
-                dto.getCodigoBarras() // Usando getCodigoBarras()
+                dto.getNome(),
+                dto.getDescricao(),
+                dto.getPreco(),
+                dto.getCodigoBarras()
         );
     }
 
