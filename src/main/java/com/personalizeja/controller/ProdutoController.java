@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.personalizeja.dto.Arte;
+import com.personalizeja.dto.ComentarioRequest;
 import com.personalizeja.dto.ArteResponse;
+import com.personalizeja.dto.ArteRequest;
 import com.personalizeja.dto.ProdutoRequest;
 import com.personalizeja.dto.ProdutoResponse;
 import com.personalizeja.model.Produto;
@@ -29,8 +30,6 @@ public class ProdutoController {
     public ProdutoController(ProdutoService service) {
         this.service = service;
     }
-
-    // ---------- Produto ----------
 
     @PostMapping("/produtos")
     public ResponseEntity<ProdutoResponse> cadastrar(@Valid @RequestBody ProdutoRequest req) {
@@ -65,8 +64,6 @@ public class ProdutoController {
         return ResponseEntity.noContent().build();
     }
 
-    // ---------- Arte ----------
-
     @PostMapping("/produtos/{id}/artes")
     public ResponseEntity<ArteResponse> enviarArte(@PathVariable Long id, @Valid @RequestBody ArteRequest req) {
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -94,6 +91,6 @@ public class ProdutoController {
     }
 
     private Produto paraEntidade(ProdutoRequest r) {
-        return new Produto(r.nome(), r.descricao(), r.preco(), r.codigoBarras());
+        return new Produto(r.getNome(), r.getDescricao(), r.getPreco(), r.getCodigoBarras());
     }
 }

@@ -64,8 +64,6 @@ public class Produto {
         }
     }
 
-    // Métodos modificadores de estado
-
     public void atualizarDados(String nome, String descricao, BigDecimal preco, String codigoBarras) {
         validarNome(nome);
         validarPreco(preco);
@@ -98,13 +96,16 @@ public class Produto {
         }
     }
 
-    // Getters
-
     public Long getId() { return id; }
     public String getNome() { return nome; }
     public String getDescricao() { return descricao; }
     public BigDecimal getPreco() { return preco; }
     public String getCodigoBarras() { return codigoBarras; }
+    
+    public void setCodigoBarras(String codigoBarras) {
+        this.codigoBarras = codigoBarras;
+    }
+
     public LocalDateTime getDataFabricacao() { return dataFabricacao; }
     public boolean isAtivo() { return ativo; }
 }

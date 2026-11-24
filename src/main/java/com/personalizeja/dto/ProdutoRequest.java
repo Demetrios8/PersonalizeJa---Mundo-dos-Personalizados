@@ -2,13 +2,43 @@ package com.personalizeja.dto;
 
 import java.math.BigDecimal;
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+public class ProdutoRequest { // ou ProdutoRequestDTO
 
-public record ProdutoRequest(
-        @NotBlank String nome,
-        String descricao,
-        @NotNull @DecimalMin("0.0") BigDecimal preco,
-        String codigoBarras) {
+    private String nome;
+    private String descricao;
+    private BigDecimal preco;
+    private String codigoBarras;
+
+    // Certifique-se de que este método exato existe:
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public BigDecimal getPreco() {
+        return preco;
+    }
+
+    public void setPreco(BigDecimal preco) {
+        this.preco = preco;
+    }
+
+    public String getCodigoBarras() {
+        return codigoBarras;
+    }
+
+    public void setCodigoBarras(String codigoBarras) {
+        this.codigoBarras = codigoBarras;
+    }
 }
