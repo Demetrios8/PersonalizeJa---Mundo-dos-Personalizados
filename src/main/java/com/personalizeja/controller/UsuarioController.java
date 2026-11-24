@@ -23,7 +23,7 @@ import com.personalizeja.service.UsuarioService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/api/usuarios")
 public class UsuarioController {
 
     private final UsuarioService service;
@@ -35,7 +35,7 @@ public class UsuarioController {
     @PostMapping
     public ResponseEntity<UsuarioResponseDTO> criar(@Valid @RequestBody UsuarioRequestDTO dto) {
         UsuarioResponseDTO criado = service.criar(dto);
-        URI local = URI.create("/usuarios/" + criado.id());
+        URI local = URI.create("/api/usuarios/" + criado.id());
         return ResponseEntity.created(local).body(criado);
     }
 

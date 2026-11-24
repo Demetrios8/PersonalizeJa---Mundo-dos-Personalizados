@@ -1,6 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1943" height="1764" viewBox="0 0 1943 1764" font-family="DejaVu Sans, Verdana, sans-serif">
-<rect width="1943" height="1764" fill="#f7f8fa"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1708" height="2213" viewBox="0 0 1708 2213" font-family="DejaVu Sans, Verdana, sans-serif">
+<rect width="1708" height="2213" fill="#f7f8fa"/>
 <text x="40" y="44" font-size="26" font-weight="700" fill="#14213d">PERSONALIZE JÁ — DIAGRAMA DE CLASSES UML</text>
+<rect x="958" y="542" width="276" height="307" rx="7" fill="#fff" stroke="#1f2d4d" stroke-width="2"/>
+<path d="M959 576 V550 Q959 543 966 543 H1226 Q1233 543 1233 550 V576 Z" fill="#dce6f4"/>
+<text x="968" y="565" font-size="16" font-weight="700" fill="#14213d">Arte</text>
+<text x="968" y="592" font-size="12" fill="#222">- id: Long</text>
+<text x="968" y="609.5" font-size="12" fill="#222">- produto: Produto</text>
+<text x="968" y="627.0" font-size="12" fill="#222">- pedido: Pedido</text>
+<text x="968" y="644.5" font-size="12" fill="#222">- versao: Integer</text>
+<text x="968" y="662.0" font-size="12" fill="#222">- arquivoUrl: String</text>
+<text x="968" y="679.5" font-size="12" fill="#222">- status: StatusAprovacao</text>
+<text x="968" y="697.0" font-size="12" fill="#222">- comentarioCliente: String</text>
+<text x="968" y="714.5" font-size="12" fill="#222">- dataEnvio: LocalDateTime</text>
+<text x="968" y="732.0" font-size="12" fill="#222">- dataAprovacao: LocalDateTime</text>
+<line x1="958" y1="741.5" x2="1234" y2="741.5" stroke="#6b7280" stroke-width="1.2"/>
+<text x="968" y="758.5" font-size="12" fill="#1b4d3e">+ iniciarAnalise(): void</text>
+<text x="968" y="776.0" font-size="12" fill="#1b4d3e">+ aprovar(): void</text>
+<text x="968" y="793.5" font-size="12" fill="#1b4d3e">+ reprovar(comentario): void</text>
+<text x="968" y="811.0" font-size="12" fill="#1b4d3e">+ solicitarRevisao(comentario): void</text>
+<text x="968" y="828.5" font-size="12" fill="#1b4d3e">~ definirPedido(pedido): void</text>
 <rect x="40" y="90" width="416" height="202" rx="7" fill="#fff" stroke="#1f2d4d" stroke-width="2"/>
 <path d="M41 124 V98 Q41 91 48 91 H448 Q455 91 455 98 V124 Z" fill="#dce6f4"/>
 <text x="50" y="113" font-size="16" font-weight="700" fill="#14213d">Cliente</text>
@@ -13,7 +31,67 @@
 <text x="50" y="245.0" font-size="12" fill="#222">- pedidos: List&lt;Pedido&gt;</text>
 <line x1="40" y1="254.5" x2="456" y2="254.5" stroke="#6b7280" stroke-width="1.2"/>
 <text x="50" y="271.5" font-size="12" fill="#1b4d3e">+ atualizarDados(nome, telefone, email, documento): void</text>
-<rect x="576" y="90" width="262" height="324" rx="7" fill="#fff" stroke="#1f2d4d" stroke-width="2"/>
+<rect x="576" y="542" width="367" height="254" rx="7" fill="#fff" stroke="#1f2d4d" stroke-width="2"/>
+<path d="M577 576 V550 Q577 543 584 543 H935 Q942 543 942 550 V576 Z" fill="#dce6f4"/>
+<text x="586" y="565" font-size="16" font-weight="700" fill="#14213d">ItemPedido</text>
+<text x="586" y="592" font-size="12" fill="#222">- id: Long</text>
+<text x="586" y="609.5" font-size="12" fill="#222">- quantidade: Integer</text>
+<text x="586" y="627.0" font-size="12" fill="#222">- precoUnitario: BigDecimal</text>
+<text x="586" y="644.5" font-size="12" fill="#222">- descricaoPersonalizacao: String</text>
+<text x="586" y="662.0" font-size="12" fill="#222">- pedido: Pedido</text>
+<text x="586" y="679.5" font-size="12" fill="#222">- produto: Produto</text>
+<line x1="576" y1="689.0" x2="943" y2="689.0" stroke="#6b7280" stroke-width="1.2"/>
+<text x="586" y="706.0" font-size="12" fill="#1b4d3e">+ alterarQuantidade(quantidade): void</text>
+<text x="586" y="723.5" font-size="12" fill="#1b4d3e">+ alterarPrecoUnitario(precoUnitario): void</text>
+<text x="586" y="741.0" font-size="12" fill="#1b4d3e">+ alterarDescricaoPersonalizacao(descricao): void</text>
+<text x="586" y="758.5" font-size="12" fill="#1b4d3e">+ calcularSubtotal(): BigDecimal</text>
+<text x="586" y="776.0" font-size="12" fill="#1b4d3e">~ definirPedido(pedido): void</text>
+<rect x="40" y="1323" width="500" height="272" rx="7" fill="#fff" stroke="#1f2d4d" stroke-width="2"/>
+<path d="M41 1357 V1331 Q41 1324 48 1324 H532 Q539 1324 539 1331 V1357 Z" fill="#dce6f4"/>
+<text x="50" y="1346" font-size="16" font-weight="700" fill="#14213d">Material</text>
+<text x="50" y="1373" font-size="12" fill="#222">- id: Long</text>
+<text x="50" y="1390.5" font-size="12" fill="#222">- nome: String</text>
+<text x="50" y="1408.0" font-size="12" fill="#222">- descricao: String</text>
+<text x="50" y="1425.5" font-size="12" fill="#222">- quantidadeEstoque: BigDecimal</text>
+<text x="50" y="1443.0" font-size="12" fill="#222">- unidadeMedida: String</text>
+<text x="50" y="1460.5" font-size="12" fill="#222">- estoqueMinimo: BigDecimal</text>
+<text x="50" y="1478.0" font-size="12" fill="#222">- movimentacoes: List&lt;MovimentacaoEstoque&gt;</text>
+<line x1="40" y1="1487.5" x2="540" y2="1487.5" stroke="#6b7280" stroke-width="1.2"/>
+<text x="50" y="1504.5" font-size="12" fill="#1b4d3e">+ atualizarDados(nome, descricao, unidadeMedida): void</text>
+<text x="50" y="1522.0" font-size="12" fill="#1b4d3e">+ alterarEstoqueMinimo(novoEstoqueMinimo): void</text>
+<text x="50" y="1539.5" font-size="12" fill="#1b4d3e">+ estaAbaixoDoMinimo(): boolean</text>
+<text x="50" y="1557.0" font-size="12" fill="#1b4d3e">+ registrarEntrada(quantidade, motivo, usuario): MovimentacaoEstoque</text>
+<text x="50" y="1574.5" font-size="12" fill="#1b4d3e">+ registrarSaida(quantidade, motivo, usuario): MovimentacaoEstoque</text>
+<rect x="660" y="1323" width="570" height="220" rx="7" fill="#fff" stroke="#1f2d4d" stroke-width="2"/>
+<path d="M661 1357 V1331 Q661 1324 668 1324 H1222 Q1229 1324 1229 1331 V1357 Z" fill="#dce6f4"/>
+<text x="670" y="1346" font-size="16" font-weight="700" fill="#14213d">MovimentacaoEstoque</text>
+<text x="670" y="1373" font-size="12" fill="#222">- id: Long</text>
+<text x="670" y="1390.5" font-size="12" fill="#222">- tipo: TipoMovimentacao</text>
+<text x="670" y="1408.0" font-size="12" fill="#222">- quantidade: BigDecimal</text>
+<text x="670" y="1425.5" font-size="12" fill="#222">- dataMovimentacao: LocalDateTime</text>
+<text x="670" y="1443.0" font-size="12" fill="#222">- motivo: String</text>
+<text x="670" y="1460.5" font-size="12" fill="#222">- material: Material</text>
+<text x="670" y="1478.0" font-size="12" fill="#222">- usuario: Usuario</text>
+<line x1="660" y1="1487.5" x2="1230" y2="1487.5" stroke="#6b7280" stroke-width="1.2"/>
+<text x="670" y="1504.5" font-size="12" fill="#1b4d3e">~ entrada(material, quantidade, motivo, usuario): MovimentacaoEstoque {static}</text>
+<text x="670" y="1522.0" font-size="12" fill="#1b4d3e">~ saida(material, quantidade, motivo, usuario): MovimentacaoEstoque {static}</text>
+<rect x="958" y="90" width="339" height="272" rx="7" fill="#fff" stroke="#1f2d4d" stroke-width="2"/>
+<path d="M959 124 V98 Q959 91 966 91 H1289 Q1296 91 1296 98 V124 Z" fill="#dce6f4"/>
+<text x="968" y="113" font-size="16" font-weight="700" fill="#14213d">Pagamento</text>
+<text x="968" y="140" font-size="12" fill="#222">- id: Long</text>
+<text x="968" y="157.5" font-size="12" fill="#222">- valor: BigDecimal</text>
+<text x="968" y="175.0" font-size="12" fill="#222">- formaPagamento: FormaPagamento</text>
+<text x="968" y="192.5" font-size="12" fill="#222">- statusPagamento: StatusPagamento</text>
+<text x="968" y="210.0" font-size="12" fill="#222">- dataCriacao: LocalDateTime</text>
+<text x="968" y="227.5" font-size="12" fill="#222">- dataPagamento: LocalDateTime</text>
+<text x="968" y="245.0" font-size="12" fill="#222">- pedido: Pedido</text>
+<line x1="958" y1="254.5" x2="1297" y2="254.5" stroke="#6b7280" stroke-width="1.2"/>
+<text x="968" y="271.5" font-size="12" fill="#1b4d3e">+ atualizarDados(valor, formaPagamento): void</text>
+<text x="968" y="289.0" font-size="12" fill="#1b4d3e">+ aprovar(): void</text>
+<text x="968" y="306.5" font-size="12" fill="#1b4d3e">+ recusar(): void</text>
+<text x="968" y="324.0" font-size="12" fill="#1b4d3e">+ cancelar(): void</text>
+<text x="968" y="341.5" font-size="12" fill="#1b4d3e">+ estornar(): void</text>
+<rect x="576" y="90" width="262" height="342" rx="7" fill="#fff" stroke="#1f2d4d" stroke-width="2"/>
 <path d="M577 124 V98 Q577 91 584 91 H830 Q837 91 837 98 V124 Z" fill="#dce6f4"/>
 <text x="586" y="113" font-size="16" font-weight="700" fill="#14213d">Pedido</text>
 <text x="586" y="140" font-size="12" fill="#222">- id: Long</text>
@@ -22,181 +100,107 @@
 <text x="586" y="192.5" font-size="12" fill="#222">- canalOrigem: CanalOrigem</text>
 <text x="586" y="210.0" font-size="12" fill="#222">- cliente: Cliente</text>
 <text x="586" y="227.5" font-size="12" fill="#222">- itens: List&lt;ItemPedido&gt;</text>
-<line x1="576" y1="237.0" x2="838" y2="237.0" stroke="#6b7280" stroke-width="1.2"/>
-<text x="586" y="254.0" font-size="12" fill="#1b4d3e">+ iniciarProducao(): void</text>
-<text x="586" y="271.5" font-size="12" fill="#1b4d3e">+ concluir(): void</text>
-<text x="586" y="289.0" font-size="12" fill="#1b4d3e">+ entregar(): void</text>
-<text x="586" y="306.5" font-size="12" fill="#1b4d3e">+ cancelar(): void</text>
-<text x="586" y="324.0" font-size="12" fill="#1b4d3e">+ adicionarItem(item): void</text>
-<text x="586" y="341.5" font-size="12" fill="#1b4d3e">+ removerItem(item): void</text>
-<text x="586" y="359.0" font-size="12" fill="#1b4d3e">+ calcularValorTotal(): BigDecimal</text>
-<text x="586" y="376.5" font-size="12" fill="#1b4d3e">- verificarStatus(esperado): void</text>
-<text x="586" y="394.0" font-size="12" fill="#1b4d3e">- verificarPossuiItens(): void</text>
-<rect x="576" y="514" width="367" height="290" rx="7" fill="#fff" stroke="#1f2d4d" stroke-width="2"/>
-<path d="M577 548 V522 Q577 515 584 515 H935 Q942 515 942 522 V548 Z" fill="#dce6f4"/>
-<text x="586" y="537" font-size="16" font-weight="700" fill="#14213d">ItemPedido</text>
-<text x="586" y="564" font-size="12" fill="#222">- id: Long</text>
-<text x="586" y="581.5" font-size="12" fill="#222">- quantidade: Integer</text>
-<text x="586" y="599.0" font-size="12" fill="#222">- precoUnitario: BigDecimal</text>
-<text x="586" y="616.5" font-size="12" fill="#222">- descricaoPersonalizacao: String</text>
-<text x="586" y="634.0" font-size="12" fill="#222">- pedido: Pedido</text>
-<text x="586" y="651.5" font-size="12" fill="#222">- produto: Produto</text>
-<line x1="576" y1="661.0" x2="943" y2="661.0" stroke="#6b7280" stroke-width="1.2"/>
-<text x="586" y="678.0" font-size="12" fill="#1b4d3e">+ alterarQuantidade(quantidade): void</text>
-<text x="586" y="695.5" font-size="12" fill="#1b4d3e">+ alterarPrecoUnitario(precoUnitario): void</text>
-<text x="586" y="713.0" font-size="12" fill="#1b4d3e">+ alterarDescricaoPersonalizacao(descricao): void</text>
-<text x="586" y="730.5" font-size="12" fill="#1b4d3e">+ calcularSubtotal(): BigDecimal</text>
-<text x="586" y="748.0" font-size="12" fill="#1b4d3e">~ definirPedido(pedido): void</text>
-<text x="586" y="765.5" font-size="12" fill="#1b4d3e">- validarQuantidade(quantidade): void</text>
-<text x="586" y="783.0" font-size="12" fill="#1b4d3e">- validarPreco(preco): void</text>
-<rect x="1063" y="514" width="444" height="290" rx="7" fill="#fff" stroke="#1f2d4d" stroke-width="2"/>
-<path d="M1064 548 V522 Q1064 515 1071 515 H1499 Q1506 515 1506 522 V548 Z" fill="#dce6f4"/>
-<text x="1073" y="537" font-size="16" font-weight="700" fill="#14213d">Produto</text>
-<text x="1073" y="564" font-size="12" fill="#222">- id: Long</text>
-<text x="1073" y="581.5" font-size="12" fill="#222">- nome: String</text>
-<text x="1073" y="599.0" font-size="12" fill="#222">- descricao: String</text>
-<text x="1073" y="616.5" font-size="12" fill="#222">- preco: BigDecimal</text>
-<text x="1073" y="634.0" font-size="12" fill="#222">- codigoBarras: String</text>
-<text x="1073" y="651.5" font-size="12" fill="#222">- dataFabricacao: LocalDateTime</text>
-<text x="1073" y="669.0" font-size="12" fill="#222">- ativo: boolean</text>
-<text x="1073" y="686.5" font-size="12" fill="#222">- artes: List&lt;Arte&gt;</text>
-<line x1="1063" y1="696.0" x2="1507" y2="696.0" stroke="#6b7280" stroke-width="1.2"/>
-<text x="1073" y="713.0" font-size="12" fill="#1b4d3e">+ atualizarDados(nome, descricao, preco, codigoBarras): void</text>
-<text x="1073" y="730.5" font-size="12" fill="#1b4d3e">+ ativar(): void</text>
-<text x="1073" y="748.0" font-size="12" fill="#1b4d3e">+ desativar(): void</text>
-<text x="1073" y="765.5" font-size="12" fill="#1b4d3e">- validarNome(nome): void</text>
-<text x="1073" y="783.0" font-size="12" fill="#1b4d3e">- validarPreco(preco): void</text>
-<rect x="1627" y="514" width="276" height="254" rx="7" fill="#fff" stroke="#1f2d4d" stroke-width="2"/>
-<path d="M1628 548 V522 Q1628 515 1635 515 H1895 Q1902 515 1902 522 V548 Z" fill="#dce6f4"/>
-<text x="1637" y="537" font-size="16" font-weight="700" fill="#14213d">Arte</text>
-<text x="1637" y="564" font-size="12" fill="#222">- id: Long</text>
-<text x="1637" y="581.5" font-size="12" fill="#222">- produto: Produto</text>
-<text x="1637" y="599.0" font-size="12" fill="#222">- versao: Integer</text>
-<text x="1637" y="616.5" font-size="12" fill="#222">- arquivoUrl: String</text>
-<text x="1637" y="634.0" font-size="12" fill="#222">- status: StatusAprovacao</text>
-<text x="1637" y="651.5" font-size="12" fill="#222">- comentarioCliente: String</text>
-<text x="1637" y="669.0" font-size="12" fill="#222">- dataEnvio: LocalDateTime</text>
-<text x="1637" y="686.5" font-size="12" fill="#222">- dataAprovacao: LocalDateTime</text>
-<line x1="1627" y1="696.0" x2="1903" y2="696.0" stroke="#6b7280" stroke-width="1.2"/>
-<text x="1637" y="713.0" font-size="12" fill="#1b4d3e">+ aprovar(): void</text>
-<text x="1637" y="730.5" font-size="12" fill="#1b4d3e">+ reprovar(comentario): void</text>
-<text x="1637" y="748.0" font-size="12" fill="#1b4d3e">+ solicitarRevisao(comentario): void</text>
-<rect x="958" y="90" width="339" height="254" rx="7" fill="#fff" stroke="#1f2d4d" stroke-width="2"/>
-<path d="M959 124 V98 Q959 91 966 91 H1289 Q1296 91 1296 98 V124 Z" fill="#dce6f4"/>
-<text x="968" y="113" font-size="16" font-weight="700" fill="#14213d">Pagamento</text>
-<text x="968" y="140" font-size="12" fill="#222">- id: Long</text>
-<text x="968" y="157.5" font-size="12" fill="#222">- valor: BigDecimal</text>
-<text x="968" y="175.0" font-size="12" fill="#222">- formaPagamento: FormaPagamento</text>
-<text x="968" y="192.5" font-size="12" fill="#222">- statusPagamento: StatusPagamento</text>
-<text x="968" y="210.0" font-size="12" fill="#222">- dataPagamento: LocalDateTime</text>
-<text x="968" y="227.5" font-size="12" fill="#222">- pedido: Pedido</text>
-<line x1="958" y1="237.0" x2="1297" y2="237.0" stroke="#6b7280" stroke-width="1.2"/>
-<text x="968" y="254.0" font-size="12" fill="#1b4d3e">+ atualizarDados(valor, formaPagamento): void</text>
-<text x="968" y="271.5" font-size="12" fill="#1b4d3e">+ aprovar(): void</text>
-<text x="968" y="289.0" font-size="12" fill="#1b4d3e">+ recusar(): void</text>
-<text x="968" y="306.5" font-size="12" fill="#1b4d3e">+ cancelar(): void</text>
-<text x="968" y="324.0" font-size="12" fill="#1b4d3e">+ estornar(): void</text>
-<rect x="40" y="904" width="500" height="272" rx="7" fill="#fff" stroke="#1f2d4d" stroke-width="2"/>
-<path d="M41 938 V912 Q41 905 48 905 H532 Q539 905 539 912 V938 Z" fill="#dce6f4"/>
-<text x="50" y="927" font-size="16" font-weight="700" fill="#14213d">Material</text>
-<text x="50" y="954" font-size="12" fill="#222">- id: Long</text>
-<text x="50" y="971.5" font-size="12" fill="#222">- nome: String</text>
-<text x="50" y="989.0" font-size="12" fill="#222">- descricao: String</text>
-<text x="50" y="1006.5" font-size="12" fill="#222">- quantidadeEstoque: BigDecimal</text>
-<text x="50" y="1024.0" font-size="12" fill="#222">- unidadeMedida: String</text>
-<text x="50" y="1041.5" font-size="12" fill="#222">- estoqueMinimo: BigDecimal</text>
-<text x="50" y="1059.0" font-size="12" fill="#222">- movimentacoes: List&lt;MovimentacaoEstoque&gt;</text>
-<line x1="40" y1="1068.5" x2="540" y2="1068.5" stroke="#6b7280" stroke-width="1.2"/>
-<text x="50" y="1085.5" font-size="12" fill="#1b4d3e">+ atualizarDados(nome, descricao, unidadeMedida): void</text>
-<text x="50" y="1103.0" font-size="12" fill="#1b4d3e">+ alterarEstoqueMinimo(novoEstoqueMinimo): void</text>
-<text x="50" y="1120.5" font-size="12" fill="#1b4d3e">+ estaAbaixoDoMinimo(): boolean</text>
-<text x="50" y="1138.0" font-size="12" fill="#1b4d3e">+ registrarEntrada(quantidade, motivo, usuario): MovimentacaoEstoque</text>
-<text x="50" y="1155.5" font-size="12" fill="#1b4d3e">+ registrarSaida(quantidade, motivo, usuario): MovimentacaoEstoque</text>
-<rect x="660" y="904" width="570" height="237" rx="7" fill="#fff" stroke="#1f2d4d" stroke-width="2"/>
-<path d="M661 938 V912 Q661 905 668 905 H1222 Q1229 905 1229 912 V938 Z" fill="#dce6f4"/>
-<text x="670" y="927" font-size="16" font-weight="700" fill="#14213d">MovimentacaoEstoque</text>
-<text x="670" y="954" font-size="12" fill="#222">- id: Long</text>
-<text x="670" y="971.5" font-size="12" fill="#222">- tipo: TipoMovimentacao</text>
-<text x="670" y="989.0" font-size="12" fill="#222">- quantidade: BigDecimal</text>
-<text x="670" y="1006.5" font-size="12" fill="#222">- dataMovimentacao: LocalDateTime</text>
-<text x="670" y="1024.0" font-size="12" fill="#222">- motivo: String</text>
-<text x="670" y="1041.5" font-size="12" fill="#222">- material: Material</text>
-<text x="670" y="1059.0" font-size="12" fill="#222">- usuario: Usuario</text>
-<line x1="660" y1="1068.5" x2="1230" y2="1068.5" stroke="#6b7280" stroke-width="1.2"/>
-<text x="670" y="1085.5" font-size="12" fill="#1b4d3e">- MovimentacaoEstoque(material, tipo, quantidade, motivo, usuario)</text>
-<text x="670" y="1103.0" font-size="12" fill="#1b4d3e">~ entrada(material, quantidade, motivo, usuario): MovimentacaoEstoque {static}</text>
-<text x="670" y="1120.5" font-size="12" fill="#1b4d3e">~ saida(material, quantidade, motivo, usuario): MovimentacaoEstoque {static}</text>
-<rect x="1350" y="904" width="269" height="254" rx="7" fill="#fff" stroke="#1f2d4d" stroke-width="2"/>
-<path d="M1351 938 V912 Q1351 905 1358 905 H1611 Q1618 905 1618 912 V938 Z" fill="#dce6f4"/>
-<text x="1360" y="927" font-size="16" font-weight="700" fill="#14213d">Usuario</text>
-<text x="1360" y="954" font-size="12" fill="#222">- id: Long</text>
-<text x="1360" y="971.5" font-size="12" fill="#222">- nome: String</text>
-<text x="1360" y="989.0" font-size="12" fill="#222">- email: String</text>
-<text x="1360" y="1006.5" font-size="12" fill="#222">- senha: String</text>
-<text x="1360" y="1024.0" font-size="12" fill="#222">- perfil: PerfilUsuario</text>
-<text x="1360" y="1041.5" font-size="12" fill="#222">- ativo: boolean</text>
-<line x1="1350" y1="1051.0" x2="1619" y2="1051.0" stroke="#6b7280" stroke-width="1.2"/>
-<text x="1360" y="1068.0" font-size="12" fill="#1b4d3e">+ atualizarDados(nome, email): void</text>
-<text x="1360" y="1085.5" font-size="12" fill="#1b4d3e">+ alterarSenha(novaSenha): void</text>
-<text x="1360" y="1103.0" font-size="12" fill="#1b4d3e">+ alterarPerfil(novoPerfil): void</text>
-<text x="1360" y="1120.5" font-size="12" fill="#1b4d3e">+ ativar(): void</text>
-<text x="1360" y="1138.0" font-size="12" fill="#1b4d3e">+ desativar(): void</text>
-<line x1="456" y1="170" x2="576" y2="170" stroke="#374151" stroke-width="2"/>
+<text x="586" y="245.0" font-size="12" fill="#222">- artes: List&lt;Arte&gt;</text>
+<line x1="576" y1="254.5" x2="838" y2="254.5" stroke="#6b7280" stroke-width="1.2"/>
+<text x="586" y="271.5" font-size="12" fill="#1b4d3e">+ iniciarProducao(): void</text>
+<text x="586" y="289.0" font-size="12" fill="#1b4d3e">+ concluir(): void</text>
+<text x="586" y="306.5" font-size="12" fill="#1b4d3e">+ entregar(): void</text>
+<text x="586" y="324.0" font-size="12" fill="#1b4d3e">+ cancelar(): void</text>
+<text x="586" y="341.5" font-size="12" fill="#1b4d3e">+ adicionarItem(item): void</text>
+<text x="586" y="359.0" font-size="12" fill="#1b4d3e">+ removerItem(item): void</text>
+<text x="586" y="376.5" font-size="12" fill="#1b4d3e">+ adicionarArte(arte): void</text>
+<text x="586" y="394.0" font-size="12" fill="#1b4d3e">+ removerArte(arte): void</text>
+<text x="586" y="411.5" font-size="12" fill="#1b4d3e">+ calcularValorTotal(): BigDecimal</text>
+<rect x="706" y="959" width="444" height="254" rx="7" fill="#fff" stroke="#1f2d4d" stroke-width="2"/>
+<path d="M707 993 V967 Q707 960 714 960 H1142 Q1149 960 1149 967 V993 Z" fill="#dce6f4"/>
+<text x="716" y="982" font-size="16" font-weight="700" fill="#14213d">Produto</text>
+<text x="716" y="1009" font-size="12" fill="#222">- id: Long</text>
+<text x="716" y="1026.5" font-size="12" fill="#222">- nome: String</text>
+<text x="716" y="1044.0" font-size="12" fill="#222">- descricao: String</text>
+<text x="716" y="1061.5" font-size="12" fill="#222">- preco: BigDecimal</text>
+<text x="716" y="1079.0" font-size="12" fill="#222">- codigoBarras: String</text>
+<text x="716" y="1096.5" font-size="12" fill="#222">- dataFabricacao: LocalDateTime</text>
+<text x="716" y="1114.0" font-size="12" fill="#222">- ativo: boolean</text>
+<text x="716" y="1131.5" font-size="12" fill="#222">- artes: List&lt;Arte&gt;</text>
+<line x1="706" y1="1141.0" x2="1150" y2="1141.0" stroke="#6b7280" stroke-width="1.2"/>
+<text x="716" y="1158.0" font-size="12" fill="#1b4d3e">+ atualizarDados(nome, descricao, preco, codigoBarras): void</text>
+<text x="716" y="1175.5" font-size="12" fill="#1b4d3e">+ ativar(): void</text>
+<text x="716" y="1193.0" font-size="12" fill="#1b4d3e">+ desativar(): void</text>
+<rect x="1350" y="1323" width="318" height="272" rx="7" fill="#fff" stroke="#1f2d4d" stroke-width="2"/>
+<path d="M1351 1357 V1331 Q1351 1324 1358 1324 H1660 Q1667 1324 1667 1331 V1357 Z" fill="#dce6f4"/>
+<text x="1360" y="1346" font-size="16" font-weight="700" fill="#14213d">Usuario</text>
+<text x="1360" y="1373" font-size="12" fill="#222">- id: Long</text>
+<text x="1360" y="1390.5" font-size="12" fill="#222">- nome: String</text>
+<text x="1360" y="1408.0" font-size="12" fill="#222">- email: String</text>
+<text x="1360" y="1425.5" font-size="12" fill="#222">- senha: String</text>
+<text x="1360" y="1443.0" font-size="12" fill="#222">- perfil: PerfilUsuario</text>
+<text x="1360" y="1460.5" font-size="12" fill="#222">- ativo: boolean</text>
+<text x="1360" y="1478.0" font-size="12" fill="#222">- movimentacoes: List&lt;MovimentacaoEstoque&gt;</text>
+<line x1="1350" y1="1487.5" x2="1668" y2="1487.5" stroke="#6b7280" stroke-width="1.2"/>
+<text x="1360" y="1504.5" font-size="12" fill="#1b4d3e">+ atualizarDados(nome, email): void</text>
+<text x="1360" y="1522.0" font-size="12" fill="#1b4d3e">+ alterarSenha(novaSenha): void</text>
+<text x="1360" y="1539.5" font-size="12" fill="#1b4d3e">+ alterarPerfil(novoPerfil): void</text>
+<text x="1360" y="1557.0" font-size="12" fill="#1b4d3e">+ desativar(): void</text>
+<text x="1360" y="1574.5" font-size="12" fill="#1b4d3e">+ ativar(): void</text>
+<polyline points="456,170 576,170" fill="none" stroke="#374151" stroke-width="2"/>
 <text x="462" y="161" font-size="12" fill="#374151" text-anchor="start">1</text>
 <text x="570" y="161" font-size="12" fill="#374151" text-anchor="end">0..*</text>
-<line x1="838" y1="170" x2="958" y2="170" stroke="#374151" stroke-width="2"/>
+<polyline points="838,170 958,170" fill="none" stroke="#374151" stroke-width="2"/>
 <polyline points="850,164 838,170 850,176" fill="none" stroke="#374151" stroke-width="2"/>
 <text x="862" y="161" font-size="12" fill="#374151" text-anchor="start">1</text>
 <text x="952" y="161" font-size="12" fill="#374151" text-anchor="end">0..*</text>
-<line x1="636" y1="414" x2="636" y2="514" stroke="#374151" stroke-width="2"/>
-<polygon points="636,414 630,424 636,434 642,424" fill="#374151" stroke="#374151" stroke-width="1.5"/>
-<text x="644" y="450" font-size="12" fill="#374151" text-anchor="start">1</text>
-<text x="644" y="506" font-size="12" fill="#374151" text-anchor="start">0..*</text>
-<line x1="943" y1="574" x2="1063" y2="574" stroke="#374151" stroke-width="2"/>
-<polyline points="1051,580 1063,574 1051,568" fill="none" stroke="#374151" stroke-width="2"/>
-<text x="949" y="565" font-size="12" fill="#374151" text-anchor="start">0..*</text>
-<text x="1039" y="565" font-size="12" fill="#374151" text-anchor="end">1</text>
-<line x1="1507" y1="574" x2="1627" y2="574" stroke="#374151" stroke-width="2"/>
-<polygon points="1507,574 1517,580 1527,574 1517,568" fill="#374151" stroke="#374151" stroke-width="1.5"/>
-<text x="1531" y="565" font-size="12" fill="#374151" text-anchor="start">1</text>
-<text x="1621" y="565" font-size="12" fill="#374151" text-anchor="end">0..*</text>
-<line x1="540" y1="984" x2="660" y2="984" stroke="#374151" stroke-width="2"/>
-<text x="546" y="975" font-size="12" fill="#374151" text-anchor="start">1</text>
-<text x="654" y="975" font-size="12" fill="#374151" text-anchor="end">0..*</text>
-<line x1="1230" y1="984" x2="1350" y2="984" stroke="#374151" stroke-width="2"/>
-<polyline points="1338,990 1350,984 1338,978" fill="none" stroke="#374151" stroke-width="2"/>
-<text x="1236" y="975" font-size="12" fill="#374151" text-anchor="start">0..*</text>
-<text x="1326" y="975" font-size="12" fill="#374151" text-anchor="end">1</text>
-<text x="40" y="1256" font-size="16" font-weight="700" fill="#14213d">Enumerações</text>
-<rect x="40" y="1274" width="470" height="72" rx="6" fill="#fff8e6" stroke="#8a6a1f" stroke-width="1.5"/>
-<text x="50" y="1296" font-size="14" font-weight="700" fill="#6b4f10">&lt;&lt;enumeration&gt;&gt; StatusPedido</text>
-<text x="50" y="1316" font-size="11.5" fill="#3b3b3b">PENDENTE | EM_PRODUCAO | CONCLUIDO | CANCELADO | ENTREGUE</text>
-<rect x="530" y="1274" width="470" height="72" rx="6" fill="#fff8e6" stroke="#8a6a1f" stroke-width="1.5"/>
-<text x="540" y="1296" font-size="14" font-weight="700" fill="#6b4f10">&lt;&lt;enumeration&gt;&gt; CanalOrigem</text>
-<text x="540" y="1316" font-size="11.5" fill="#3b3b3b">WHATSAPP | INSTAGRAM | SITE | PRESENCIAL</text>
-<rect x="1020" y="1274" width="470" height="72" rx="6" fill="#fff8e6" stroke="#8a6a1f" stroke-width="1.5"/>
-<text x="1030" y="1296" font-size="14" font-weight="700" fill="#6b4f10">&lt;&lt;enumeration&gt;&gt; StatusAprovacao</text>
-<text x="1030" y="1316" font-size="11.5" fill="#3b3b3b">PENDENTE | EM_ANALISE | APROVADA | REPROVADA |</text>
-<text x="1030" y="1331" font-size="11.5" fill="#3b3b3b">REVISAO_SOLICITADA</text>
-<rect x="40" y="1362" width="470" height="72" rx="6" fill="#fff8e6" stroke="#8a6a1f" stroke-width="1.5"/>
-<text x="50" y="1384" font-size="14" font-weight="700" fill="#6b4f10">&lt;&lt;enumeration&gt;&gt; StatusPagamento</text>
-<text x="50" y="1404" font-size="11.5" fill="#3b3b3b">PENDENTE | APROVADO | RECUSADO | CANCELADO | ESTORNADO</text>
-<rect x="530" y="1362" width="470" height="72" rx="6" fill="#fff8e6" stroke="#8a6a1f" stroke-width="1.5"/>
-<text x="540" y="1384" font-size="14" font-weight="700" fill="#6b4f10">&lt;&lt;enumeration&gt;&gt; FormaPagamento</text>
-<text x="540" y="1404" font-size="11.5" fill="#3b3b3b">DINHEIRO | PIX | CARTAO_CREDITO | CARTAO_DEBITO | BOLETO</text>
-<rect x="1020" y="1362" width="470" height="72" rx="6" fill="#fff8e6" stroke="#8a6a1f" stroke-width="1.5"/>
-<text x="1030" y="1384" font-size="14" font-weight="700" fill="#6b4f10">&lt;&lt;enumeration&gt;&gt; TipoMovimentacao</text>
-<text x="1030" y="1404" font-size="11.5" fill="#3b3b3b">ENTRADA | SAIDA</text>
-<rect x="40" y="1450" width="470" height="72" rx="6" fill="#fff8e6" stroke="#8a6a1f" stroke-width="1.5"/>
-<text x="50" y="1472" font-size="14" font-weight="700" fill="#6b4f10">&lt;&lt;enumeration&gt;&gt; PerfilUsuario</text>
-<text x="50" y="1492" font-size="11.5" fill="#3b3b3b">ADMINISTRADOR | ATENDENTE | PRODUCAO</text>
-<text x="40" y="1574" font-size="16" font-weight="700" fill="#14213d">Relacionamentos (multiplicidades)</text>
-<text x="52" y="1598" font-size="12.5" fill="#374151">Cliente 1 — 0..* Pedido   (bidirecional: Cliente.pedidos / Pedido.cliente)</text>
-<text x="52" y="1617" font-size="12.5" fill="#374151">Pedido 1 ◆— 0..* ItemPedido   (composição: cascade ALL + orphanRemoval; bidirecional)</text>
-<text x="52" y="1636" font-size="12.5" fill="#374151">ItemPedido 0..* → 1 Produto   (unidirecional: só ItemPedido conhece Produto)</text>
-<text x="52" y="1655" font-size="12.5" fill="#374151">Produto 1 ◆— 0..* Arte   (cascade ALL; bidirecional: Produto.artes / Arte.produto)</text>
-<text x="52" y="1674" font-size="12.5" fill="#374151">Pagamento 0..* → 1 Pedido   (unidirecional: só Pagamento conhece Pedido)</text>
-<text x="52" y="1693" font-size="12.5" fill="#374151">Material 1 — 0..* MovimentacaoEstoque   (bidirecional)</text>
-<text x="52" y="1712" font-size="12.5" fill="#374151">MovimentacaoEstoque 0..* → 1 Usuario   (unidirecional)</text>
-<text x="40" y="1745" font-size="11.5" fill="#6b7280">Visibilidade: + público, - privado, ~ package-private. Construtores protegidos/públicos e getters omitidos por brevidade.</text>
+<polyline points="636,432 636,542" fill="none" stroke="#374151" stroke-width="2"/>
+<polygon points="636,432 630,442 636,452 642,442" fill="#374151" stroke="#374151" stroke-width="1.5"/>
+<text x="644" y="470" font-size="12" fill="#374151" text-anchor="start">1</text>
+<text x="644" y="534" font-size="12" fill="#374151" text-anchor="start">0..*</text>
+<polyline points="838,398 1018,398 1018,542" fill="none" stroke="#374151" stroke-width="2"/>
+<text x="844" y="390" font-size="12" fill="#374151" text-anchor="start">0..1</text>
+<text x="1026" y="534" font-size="12" fill="#374151" text-anchor="start">0..*</text>
+<polyline points="759,796 759,904 839,904 839,959" fill="none" stroke="#374151" stroke-width="2"/>
+<polyline points="833,947 839,959 845,947" fill="none" stroke="#374151" stroke-width="2"/>
+<text x="767" y="814" font-size="12" fill="#374151" text-anchor="start">0..*</text>
+<text x="847" y="951" font-size="12" fill="#374151" text-anchor="start">1</text>
+<polyline points="1174,849 1174,904 1017,904 1017,959" fill="none" stroke="#374151" stroke-width="2"/>
+<polygon points="1017,959 1023,949 1017,939 1011,949" fill="#374151" stroke="#374151" stroke-width="1.5"/>
+<text x="1182" y="867" font-size="12" fill="#374151" text-anchor="start">0..*</text>
+<text x="1027" y="951" font-size="12" fill="#374151" text-anchor="start">1</text>
+<polyline points="540,1403 660,1403" fill="none" stroke="#374151" stroke-width="2"/>
+<text x="546" y="1394" font-size="12" fill="#374151" text-anchor="start">1</text>
+<text x="654" y="1394" font-size="12" fill="#374151" text-anchor="end">0..*</text>
+<polyline points="1230,1403 1350,1403" fill="none" stroke="#374151" stroke-width="2"/>
+<text x="1236" y="1394" font-size="12" fill="#374151" text-anchor="start">0..*</text>
+<text x="1344" y="1394" font-size="12" fill="#374151" text-anchor="end">1</text>
+<text x="40" y="1675" font-size="16" font-weight="700" fill="#14213d">Enumerações</text>
+<rect x="40" y="1693" width="470" height="72" rx="6" fill="#fff8e6" stroke="#8a6a1f" stroke-width="1.5"/>
+<text x="50" y="1715" font-size="14" font-weight="700" fill="#6b4f10">&lt;&lt;enumeration&gt;&gt; StatusPedido</text>
+<text x="50" y="1735" font-size="11.5" fill="#3b3b3b">PENDENTE | EM_PRODUCAO | CONCLUIDO | CANCELADO | ENTREGUE</text>
+<rect x="530" y="1693" width="470" height="72" rx="6" fill="#fff8e6" stroke="#8a6a1f" stroke-width="1.5"/>
+<text x="540" y="1715" font-size="14" font-weight="700" fill="#6b4f10">&lt;&lt;enumeration&gt;&gt; CanalOrigem</text>
+<text x="540" y="1735" font-size="11.5" fill="#3b3b3b">WHATSAPP | INSTAGRAM | SITE | PRESENCIAL</text>
+<rect x="1020" y="1693" width="470" height="72" rx="6" fill="#fff8e6" stroke="#8a6a1f" stroke-width="1.5"/>
+<text x="1030" y="1715" font-size="14" font-weight="700" fill="#6b4f10">&lt;&lt;enumeration&gt;&gt; StatusAprovacao</text>
+<text x="1030" y="1735" font-size="11.5" fill="#3b3b3b">PENDENTE | EM_ANALISE | APROVADA | REPROVADA |</text>
+<text x="1030" y="1750" font-size="11.5" fill="#3b3b3b">REVISAO_SOLICITADA</text>
+<rect x="40" y="1781" width="470" height="72" rx="6" fill="#fff8e6" stroke="#8a6a1f" stroke-width="1.5"/>
+<text x="50" y="1803" font-size="14" font-weight="700" fill="#6b4f10">&lt;&lt;enumeration&gt;&gt; StatusPagamento</text>
+<text x="50" y="1823" font-size="11.5" fill="#3b3b3b">PENDENTE | APROVADO | RECUSADO | CANCELADO | ESTORNADO</text>
+<rect x="530" y="1781" width="470" height="72" rx="6" fill="#fff8e6" stroke="#8a6a1f" stroke-width="1.5"/>
+<text x="540" y="1803" font-size="14" font-weight="700" fill="#6b4f10">&lt;&lt;enumeration&gt;&gt; FormaPagamento</text>
+<text x="540" y="1823" font-size="11.5" fill="#3b3b3b">DINHEIRO | PIX | CARTAO_CREDITO | CARTAO_DEBITO | BOLETO</text>
+<rect x="1020" y="1781" width="470" height="72" rx="6" fill="#fff8e6" stroke="#8a6a1f" stroke-width="1.5"/>
+<text x="1030" y="1803" font-size="14" font-weight="700" fill="#6b4f10">&lt;&lt;enumeration&gt;&gt; TipoMovimentacao</text>
+<text x="1030" y="1823" font-size="11.5" fill="#3b3b3b">ENTRADA | SAIDA</text>
+<rect x="40" y="1869" width="470" height="72" rx="6" fill="#fff8e6" stroke="#8a6a1f" stroke-width="1.5"/>
+<text x="50" y="1891" font-size="14" font-weight="700" fill="#6b4f10">&lt;&lt;enumeration&gt;&gt; PerfilUsuario</text>
+<text x="50" y="1911" font-size="11.5" fill="#3b3b3b">ADMINISTRADOR | ATENDENTE | PRODUCAO</text>
+<text x="40" y="1993" font-size="16" font-weight="700" fill="#14213d">Relacionamentos (multiplicidades)</text>
+<text x="52" y="2017" font-size="12.5" fill="#374151">Cliente 1 — 0..* Pedido   (bidirecional: Cliente.pedidos / Pedido.cliente)</text>
+<text x="52" y="2036" font-size="12.5" fill="#374151">Pedido 1 ◆— 0..* ItemPedido   (composição: cascade ALL + orphanRemoval; bidirecional)</text>
+<text x="52" y="2055" font-size="12.5" fill="#374151">Pedido 0..1 — 0..* Arte   (bidirecional; arte personalizada de um pedido. Arte padrão tem pedido nulo)</text>
+<text x="52" y="2074" font-size="12.5" fill="#374151">ItemPedido 0..* → 1 Produto   (unidirecional: só ItemPedido conhece Produto)</text>
+<text x="52" y="2093" font-size="12.5" fill="#374151">Produto 1 ◆— 0..* Arte   (cascade ALL; bidirecional: Produto.artes / Arte.produto)</text>
+<text x="52" y="2112" font-size="12.5" fill="#374151">Pagamento 0..* → 1 Pedido   (unidirecional: só Pagamento conhece Pedido)</text>
+<text x="52" y="2131" font-size="12.5" fill="#374151">Material 1 — 0..* MovimentacaoEstoque   (bidirecional)</text>
+<text x="52" y="2150" font-size="12.5" fill="#374151">Usuario 1 — 0..* MovimentacaoEstoque   (bidirecional)</text>
+<text x="40" y="2183" font-size="11.5" fill="#6b7280">Visibilidade: + público, - privado, ~ package-private. Construtores, getters e métodos auxiliares privados (validações) omitidos por brevidade.</text>
 </svg>

@@ -21,21 +21,21 @@ O sistema permite acompanhar os pedidos desde o atendimento inicial até a concl
 - Spring Web
 - Spring Data JPA
 - Hibernate
-- PostgreSQL
+- Bean Validation
+- H2 Database (desenvolvimento)
+- PostgreSQL (previsto para as próximas etapas)
 - Maven
 - Lombok
 
 ## Funcionalidades do sistema
 
-O sistema contempla as seguintes funcionalidades:
-
 - **Clientes:** cadastro, consulta e atualização dos dados dos clientes.
 - **Produtos:** gerenciamento dos produtos oferecidos pelo ateliê.
 - **Pedidos:** criação e acompanhamento dos pedidos, incluindo status, canal de origem e itens.
-- **Personalização e artes:** gerenciamento das artes, versões, aprovações e solicitações de revisão.
+- **Personalização e artes:** gerenciamento das artes, versões, aprovações e solicitações de revisão. A produção de um pedido só pode ser iniciada quando todas as suas artes estiverem aprovadas.
 - **Pagamentos:** registro e gerenciamento dos pagamentos, com controle de formas e status.
 - **Estoque:** cadastro de materiais, controle de quantidade e definição de estoque mínimo.
-- **Movimentações de estoque:** registro de entradas e saídas de materiais, identificando o motivo e o usuário responsável.
+- **Movimentações de estoque:** registro de entradas e saídas de materiais, identificando o motivo e o usuário responsável. O sistema impede estoque negativo.
 - **Usuários:** gerenciamento dos usuários do sistema, com controle de perfil e ativação.
 
 ## Entidades do sistema
@@ -53,8 +53,6 @@ O sistema contempla as seguintes funcionalidades:
 | Usuario | Usuário do sistema, com perfil de acesso |
 
 ### Enumerações
-
-O projeto utiliza as seguintes enumerações:
 
 - `StatusPedido`
 - `CanalOrigem`
@@ -75,10 +73,10 @@ O diagrama UML representa a estrutura das entidades, seus atributos, métodos e 
 ### Relacionamentos e multiplicidades
 
 - Cliente 1 — 0..* Pedido
-- Pedido 1 — 0..* ItemPedido
-- Produto 1 — 0..* ItemPedido
-- Produto 1 — 0..* Arte
+- Pedido 1 ◆— 0..* ItemPedido (composição)
 - Pedido 0..1 — 0..* Arte
+- Produto 1 — 0..* ItemPedido
+- Produto 1 ◆— 0..* Arte
 - Pedido 1 — 0..* Pagamento
 - Material 1 — 0..* MovimentacaoEstoque
 - Usuario 1 — 0..* MovimentacaoEstoque
@@ -135,18 +133,17 @@ Cada camada possui uma responsabilidade específica:
 
 - Java 21
 - Maven ou Maven Wrapper incluído no projeto
-- PostgreSQL, caso a execução utilize a configuração de banco de dados da aplicação.
+
+Não é necessário instalar nenhum banco de dados.
 
 ### Como obter o projeto
-
-Clone o repositório:
 
 ```bash
 git clone https://github.com/Demetrios8/PersonalizeJa---Mundo-dos-Personalizados.git
 cd PersonalizeJa---Mundo-dos-Personalizados
 ```
 
-### Como compilar o projeto
+### Como compilar
 
 No Linux ou macOS:
 
@@ -160,11 +157,9 @@ No Windows:
 mvnw.cmd clean compile
 ```
 
-Se a compilação terminar com `BUILD SUCCESS`, significa que o código passou pela etapa de compilação.
-
 ### Como executar
 
-Após configurar o banco de dados PostgreSQL de acordo com as propriedades da aplicação, execute:
+No Linux ou macOS:
 
 ```bash
 ./mvnw spring-boot:run
@@ -176,11 +171,57 @@ No Windows:
 mvnw.cmd spring-boot:run
 ```
 
+A aplicação ficará disponível em `http://localhost:8080`.
+
+### Banco de dados
+
+O projeto utiliza o banco **H2 em memória**, configurado no arquivo `src/main/resources/application.yml`. As tabelas são criadas automaticamente a partir das entidades quando a aplicação inicia, e os dados são apagados quando ela é encerrada.
+
+Para consultar o banco, acesse `http://localhost:8080/h2-console` e informe:
+
+| Campo | Valor |
+|---|---|
+| JDBC URL | `jdbc:h2:mem:testdb` |
+| Usuário | `sa` |
+| Senha | (vazia) |
+
+A dependência do PostgreSQL já está incluída no projeto, mas a conexão com ele será configurada nas próximas etapas.
+
+## Endpoints da API
+
+Todos os endpoints utilizam o prefixo `/api`.
+
+| Recurso | Endpoints |
+|---|---|
+| Clientes (`/api/clientes`) | `POST`, `GET`, `GET /{id}`, `PUT /{id}` |
+| Usuários (`/api/usuarios`) | `POST`, `GET`, `GET /{id}`, `PUT /{id}`, `PATCH /{id}/senha`, `PATCH /{id}/perfil`, `PATCH /{id}/ativar`, `PATCH /{id}/desativar` |
+| Produtos (`/api/produtos`) | `POST`, `GET`, `GET /{id}`, `PUT /{id}`, `PATCH /{id}/ativar`, `PATCH /{id}/desativar` |
+| Artes | `POST /api/produtos/{id}/artes`, `GET /api/produtos/{id}/artes`, `PATCH /api/artes/{id}/aprovar`, `PATCH /api/artes/{id}/reprovar`, `PATCH /api/artes/{id}/revisao` |
+| Pedidos (`/api/pedidos`) | `POST`, `GET`, `GET /{id}`, `PATCH /{id}/iniciar-producao`, `PATCH /{id}/concluir`, `PATCH /{id}/entregar`, `PATCH /{id}/cancelar` |
+| Pagamentos (`/api/pagamentos`) | `POST`, `GET`, `GET /{id}`, `PUT /{id}`, `PATCH /{id}/aprovar`, `PATCH /{id}/recusar`, `PATCH /{id}/cancelar`, `PATCH /{id}/estornar` |
+| Materiais (`/api/materiais`) | `POST`, `GET`, `GET /{id}`, `PUT /{id}`, `GET /abaixo-do-minimo`, `POST /{id}/entradas`, `POST /{id}/saidas` |
+
+### Exemplo de requisição
+
+Cadastro de um cliente:
+
+```http
+POST /api/clientes
+Content-Type: application/json
+
+{
+  "nome": "Ana Souza",
+  "telefone": "(85) 99999-0000",
+  "email": "ana@email.com",
+  "documento": "123.456.789-00"
+}
+```
+
 ## Próximas etapas
 
-- Finalização e integração das funcionalidades do sistema.
 - Testes das regras de negócio e dos endpoints.
-- Validação da persistência e dos relacionamentos com PostgreSQL.
+- Configuração e validação da persistência com PostgreSQL.
+- Implementação de autenticação e armazenamento seguro de senhas.
 - Ajustes e melhorias identificados durante os testes.
 
 ## Status do projeto

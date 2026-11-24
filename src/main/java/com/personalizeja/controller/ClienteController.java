@@ -20,7 +20,7 @@ import com.personalizeja.service.ClienteService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping("/api/clientes")
 public class ClienteController {
 
     private final ClienteService service;
@@ -32,7 +32,7 @@ public class ClienteController {
     @PostMapping
     public ResponseEntity<ClienteResponseDTO> criar(@Valid @RequestBody ClienteRequestDTO dto) {
         ClienteResponseDTO criado = service.criar(dto);
-        URI local = URI.create("/clientes/" + criado.id());
+        URI local = URI.create("/api/clientes/" + criado.id());
         return ResponseEntity.created(local).body(criado);
     }
 
