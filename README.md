@@ -18,25 +18,25 @@ O sistema permite acompanhar os pedidos desde o atendimento inicial até a concl
 
 - Java 21
 - Spring Boot
-- Spring Web
+- Spring Web MVC
 - Spring Data JPA
 - Hibernate
 - Bean Validation
-- H2 Database (desenvolvimento)
-- PostgreSQL (previsto para as próximas etapas)
+- H2 Database (banco em memória para desenvolvimento)
+- PostgreSQL (dependência incluída; conexão prevista para uma próxima etapa)
 - Maven
 - Lombok
 
 ## Funcionalidades do sistema
 
-- **Clientes:** cadastro, consulta e atualização dos dados dos clientes.
-- **Produtos:** gerenciamento dos produtos oferecidos pelo ateliê.
-- **Pedidos:** criação e acompanhamento dos pedidos, incluindo status, canal de origem e itens.
-- **Personalização e artes:** gerenciamento das artes, versões, aprovações e solicitações de revisão. A produção de um pedido só pode ser iniciada quando todas as suas artes estiverem aprovadas.
-- **Pagamentos:** registro e gerenciamento dos pagamentos, com controle de formas e status.
-- **Estoque:** cadastro de materiais, controle de quantidade e definição de estoque mínimo.
-- **Movimentações de estoque:** registro de entradas e saídas de materiais, identificando o motivo e o usuário responsável. O sistema impede estoque negativo.
-- **Usuários:** gerenciamento dos usuários do sistema, com controle de perfil e ativação.
+- **Clientes:** cadastro, consulta, listagem e atualização dos dados dos clientes.
+- **Produtos:** cadastro, consulta, listagem, atualização e ativação ou desativação dos produtos.
+- **Pedidos:** criação e acompanhamento dos pedidos, incluindo status, canal de origem, cliente e itens.
+- **Personalização e artes:** envio e consulta de artes vinculadas aos produtos, com aprovação, reprovação e solicitação de revisão. O início da produção de um pedido depende da aprovação de suas artes.
+- **Pagamentos:** cadastro, consulta, atualização e controle dos status dos pagamentos, incluindo aprovação, recusa, cancelamento e estorno.
+- **Estoque:** cadastro e gerenciamento de materiais, consulta de quantidade e identificação de materiais abaixo do estoque mínimo.
+- **Movimentações de estoque:** registro de entradas e saídas de materiais, com quantidade, motivo e identificação do usuário responsável. O sistema valida as movimentações para evitar estoque negativo.
+- **Usuários:** cadastro, consulta, atualização de dados, alteração de senha e perfil, além de ativação e desativação.
 
 ## Entidades do sistema
 
@@ -45,14 +45,16 @@ O sistema permite acompanhar os pedidos desde o atendimento inicial até a concl
 | Cliente | Dados de contato e cadastro de quem faz os pedidos |
 | Pedido | Pedido do cliente, com status, canal de origem, itens e artes |
 | ItemPedido | Produto, quantidade, preço e descrição da personalização |
-| Produto | Produto vendido pelo ateliê |
-| Arte | Versões da arte de um produto e seu processo de aprovação |
-| Pagamento | Pagamentos associados a um pedido, com forma e status |
+| Produto | Produto oferecido pelo ateliê |
+| Arte | Arquivo, versão e processo de aprovação da arte de um produto; pode estar associada a um pedido |
+| Pagamento | Pagamento associado a um pedido, com forma e status |
 | Material | Material em estoque, com quantidade e estoque mínimo |
-| MovimentacaoEstoque | Entradas e saídas de materiais, com motivo e responsável |
-| Usuario | Usuário do sistema, com perfil de acesso |
+| MovimentacaoEstoque | Entradas e saídas de materiais, com motivo e usuário responsável |
+| Usuario | Usuário do sistema, com perfil de acesso e situação de ativação |
 
 ### Enumerações
+
+O projeto utiliza as seguintes enumerações:
 
 - `StatusPedido`
 - `CanalOrigem`
@@ -62,11 +64,11 @@ O sistema permite acompanhar os pedidos desde o atendimento inicial até a concl
 - `TipoMovimentacao`
 - `PerfilUsuario`
 
-As alterações de estado das entidades são realizadas por métodos de domínio, como `Pedido.iniciarProducao()`, `Pagamento.aprovar()` e `Usuario.desativar()`. Dessa forma, as regras de negócio ficam concentradas nas próprias entidades, evitando alterações indevidas por meio de setters genéricos.
+As alterações de estado das entidades são realizadas por métodos de domínio, como `Pedido.iniciarProducao()`, `Pagamento.aprovar()` e `Usuario.desativar()`. Assim, as regras de negócio ficam concentradas nas entidades e nos serviços responsáveis pelas operações, evitando alterações indevidas por meio de setters genéricos.
 
 ## Diagrama de classes UML
 
-O diagrama UML representa a estrutura das entidades, seus atributos, métodos e relacionamentos, incluindo as respectivas multiplicidades.
+O diagrama UML apresenta as entidades do sistema, seus atributos, métodos e relacionamentos, incluindo as respectivas multiplicidades.
 
 ![Diagrama de classes UML do Personalize Já](docs/diagrama-uml-personalize-ja.svg)
 
@@ -74,58 +76,110 @@ O diagrama UML representa a estrutura das entidades, seus atributos, métodos e 
 
 - Cliente 1 — 0..* Pedido
 - Pedido 1 ◆— 0..* ItemPedido (composição)
-- Pedido 0..1 — 0..* Arte
 - Produto 1 — 0..* ItemPedido
-- Produto 1 ◆— 0..* Arte
+- Produto 1 — 0..* Arte
+- Pedido 0..1 — 0..* Arte
 - Pedido 1 — 0..* Pagamento
 - Material 1 — 0..* MovimentacaoEstoque
 - Usuario 1 — 0..* MovimentacaoEstoque
 
 ## Arquitetura
 
-### Arquitetura escolhida
+### Organização adotada
 
-O projeto utiliza a **Arquitetura em Camadas**, organizando o sistema de acordo com as responsabilidades de cada componente.
+O projeto utiliza a **Arquitetura em Camadas**, com os pacotes organizados principalmente por funcionalidade (módulos de domínio). Dessa forma, cada área do sistema possui seus próprios componentes, separados conforme suas responsabilidades, como `controller`, `service`, `repository`, `entity`, `dto` e `mapper`, quando necessários.
 
-Essa arquitetura separa a comunicação HTTP, as regras de negócio, o acesso aos dados e a representação das informações, facilitando a manutenção e a evolução da aplicação.
+Essa organização mantém próximas as classes que trabalham com a mesma funcionalidade e separa a comunicação HTTP, as regras de negócio, o acesso aos dados e a transferência de informações.
 
 ### Justificativa
 
-- **Necessidades do negócio:** o ateliê precisa controlar pedidos, pagamentos, aprovação de artes e estoque. A separação em camadas evita que as regras de negócio fiquem misturadas com o acesso ao banco de dados ou com a comunicação HTTP.
-- **Complexidade do sistema:** o sistema possui complexidade média, pois envolve diferentes entidades, relacionamentos e regras de negócio, como o fluxo de status dos pedidos, a aprovação de artes e a movimentação do estoque.
-- **Características da equipe:** a equipe possui cinco integrantes que trabalham no desenvolvimento do sistema. A divisão por camadas facilita a organização das tarefas e permite que diferentes integrantes trabalhem em partes distintas da aplicação.
+- **Necessidades do negócio:** o ateliê precisa controlar clientes, produtos, pedidos, pagamentos, aprovação de artes e estoque. A separação das responsabilidades evita que as regras de negócio fiquem misturadas com a comunicação HTTP ou com o acesso ao banco de dados.
+- **Complexidade do sistema:** o sistema possui complexidade média, pois envolve diferentes entidades, relacionamentos e regras de negócio, como o fluxo de status dos pedidos, a aprovação de artes e a movimentação do estoque. A divisão por funcionalidades facilita localizar e manter cada parte.
+- **Características da equipe:** a equipe possui cinco integrantes. A organização por módulos facilita a divisão do trabalho por áreas do sistema, enquanto a separação em camadas dentro dos módulos mantém um padrão de desenvolvimento.
 
-Além disso, essa estrutura facilita a manutenção, a correção de erros, a reutilização de componentes e a realização de testes.
+Essa estrutura também facilita a manutenção, a correção de erros, a reutilização de componentes e a realização de testes.
 
 ### Organização do código
 
-O código está organizado no pacote base `com.personalizeja`:
+O código-fonte está no pacote base `com.personalizeja`, organizado por funcionalidades:
 
 ```text
 src/main/java/com/personalizeja
 ├── PersonalizejaApplication.java
-├── config        # configurações da aplicação
-├── controller    # recebe e responde às requisições HTTP
-├── service       # concentra as regras de negócio
-├── repository    # acesso e persistência dos dados
-├── model         # entidades JPA e métodos de domínio
-├── dto           # objetos de transferência de dados
-├── mapper        # conversão entre entidades e DTOs
-├── enums         # enumerações utilizadas pelo sistema
-└── exception     # tratamento de exceções
+├── arte/
+│   ├── dto/
+│   ├── entity/
+│   ├── enums/
+│   ├── repository/
+│   └── service/
+├── cliente/
+│   ├── controller/
+│   ├── dto/
+│   ├── entity/
+│   ├── mapper/
+│   ├── repository/
+│   └── service/
+├── config/
+├── exception/
+├── material/
+│   ├── controller/
+│   ├── dto/
+│   ├── entity/
+│   ├── mapper/
+│   ├── repository/
+│   └── service/
+├── movimentacaoestoque/
+│   ├── dto/
+│   ├── entity/
+│   ├── enums/
+│   ├── mapper/
+│   └── repository/
+├── pagamento/
+│   ├── controller/
+│   ├── dto/
+│   ├── entity/
+│   ├── enums/
+│   ├── mapper/
+│   ├── repository/
+│   └── service/
+├── pedido/
+│   ├── controller/
+│   ├── dto/
+│   ├── entity/
+│   ├── enums/
+│   ├── mapper/
+│   ├── repository/
+│   └── service/
+├── produto/
+│   ├── controller/
+│   ├── dto/
+│   ├── entity/
+│   ├── mapper/
+│   ├── repository/
+│   └── service/
+└── usuario/
+    ├── controller/
+    ├── dto/
+    ├── entity/
+    ├── enums/
+    ├── mapper/
+    ├── repository/
+    └── service/
 ```
 
-Cada camada possui uma responsabilidade específica:
+As principais responsabilidades são:
 
-- **Controller:** recebe as requisições HTTP e encaminha as operações para a camada de serviço.
-- **Service:** concentra a lógica de negócio e coordena as operações do sistema.
+- **Controller:** recebe as requisições HTTP e encaminha as operações para os serviços. Os endpoints de artes são disponibilizados pelo `ProdutoController`, e as movimentações de estoque são realizadas pelo `MaterialController`.
+- **Service:** concentra as regras de negócio e coordena as operações de cada funcionalidade.
 - **Repository:** realiza o acesso e a persistência dos dados utilizando Spring Data JPA.
-- **Model:** contém as entidades do sistema, seus atributos, relacionamentos e métodos de domínio.
-- **DTO:** define os objetos utilizados na transferência de dados entre as camadas.
+- **Entity:** representa as entidades persistidas no banco de dados, seus atributos, relacionamentos e métodos de domínio.
+- **DTO:** define os objetos utilizados para receber dados das requisições e retornar informações da API.
 - **Mapper:** realiza a conversão entre entidades e DTOs.
-- **Enums:** define valores fixos utilizados nas regras de negócio.
-- **Config:** reúne as configurações da aplicação.
-- **Exception:** concentra o tratamento de exceções e erros.
+- **Enums:** define os valores fixos utilizados pelo sistema.
+- **Exception:** reúne exceções próprias e o tratamento global de erros.
+- **Config:** pacote destinado às configurações gerais da aplicação.
+
+Nem todos os módulos possuem exatamente os mesmos subpacotes. Os componentes são organizados conforme a necessidade de cada funcionalidade.
 
 ## Execução do projeto
 
@@ -134,7 +188,7 @@ Cada camada possui uma responsabilidade específica:
 - Java 21
 - Maven ou Maven Wrapper incluído no projeto
 
-Não é necessário instalar nenhum banco de dados.
+Não é necessário instalar o PostgreSQL para executar a configuração atual, pois o projeto utiliza o H2 em memória durante o desenvolvimento.
 
 ### Como obter o projeto
 
@@ -143,7 +197,7 @@ git clone https://github.com/Demetrios8/PersonalizeJa---Mundo-dos-Personalizados
 cd PersonalizeJa---Mundo-dos-Personalizados
 ```
 
-### Como compilar
+### Como compilar o projeto
 
 No Linux ou macOS:
 
@@ -157,7 +211,7 @@ No Windows:
 mvnw.cmd clean compile
 ```
 
-### Como executar
+### Como executar o projeto
 
 No Linux ou macOS:
 
@@ -171,13 +225,13 @@ No Windows:
 mvnw.cmd spring-boot:run
 ```
 
-A aplicação ficará disponível em `http://localhost:8080`.
+A aplicação ficará disponível em `http://localhost:8081`.
 
-### Banco de dados
+### Banco de dados H2
 
-O projeto utiliza o banco **H2 em memória**, configurado no arquivo `src/main/resources/application.yml`. As tabelas são criadas automaticamente a partir das entidades quando a aplicação inicia, e os dados são apagados quando ela é encerrada.
+A configuração atual utiliza o **H2 em memória**, definido em `src/main/resources/application.yml`. As tabelas são criadas automaticamente a partir das entidades quando a aplicação inicia. Como o banco é em memória, os dados são perdidos quando a aplicação é encerrada.
 
-Para consultar o banco, acesse `http://localhost:8080/h2-console` e informe:
+O console do H2 pode ser acessado em `http://localhost:8081/h2-console`, utilizando os seguintes dados:
 
 | Campo | Valor |
 |---|---|
@@ -185,13 +239,13 @@ Para consultar o banco, acesse `http://localhost:8080/h2-console` e informe:
 | Usuário | `sa` |
 | Senha | (vazia) |
 
-A dependência do PostgreSQL já está incluída no projeto, mas a conexão com ele será configurada nas próximas etapas.
+A dependência do PostgreSQL já está incluída no projeto, mas a conexão com esse banco ainda não está configurada no arquivo de propriedades.
 
 ## Endpoints da API
 
-Todos os endpoints utilizam o prefixo `/api`.
+Os endpoints utilizam o prefixo `/api`.
 
-| Recurso | Endpoints |
+| Recurso | Endpoints disponíveis |
 |---|---|
 | Clientes (`/api/clientes`) | `POST`, `GET`, `GET /{id}`, `PUT /{id}` |
 | Usuários (`/api/usuarios`) | `POST`, `GET`, `GET /{id}`, `PUT /{id}`, `PATCH /{id}/senha`, `PATCH /{id}/perfil`, `PATCH /{id}/ativar`, `PATCH /{id}/desativar` |
@@ -201,29 +255,15 @@ Todos os endpoints utilizam o prefixo `/api`.
 | Pagamentos (`/api/pagamentos`) | `POST`, `GET`, `GET /{id}`, `PUT /{id}`, `PATCH /{id}/aprovar`, `PATCH /{id}/recusar`, `PATCH /{id}/cancelar`, `PATCH /{id}/estornar` |
 | Materiais (`/api/materiais`) | `POST`, `GET`, `GET /{id}`, `PUT /{id}`, `GET /abaixo-do-minimo`, `POST /{id}/entradas`, `POST /{id}/saidas` |
 
-### Exemplo de requisição
-
-Cadastro de um cliente:
-
-```http
-POST /api/clientes
-Content-Type: application/json
-
-{
-  "nome": "Ana Souza",
-  "telefone": "(85) 99999-0000",
-  "email": "ana@email.com",
-  "documento": "123.456.789-00"
-}
-```
+As operações de entrada e saída de estoque retornam os dados da movimentação registrada. Elas são disponibilizadas dentro do recurso de materiais.
 
 ## Próximas etapas
 
-- Testes das regras de negócio e dos endpoints.
-- Configuração e validação da persistência com PostgreSQL.
-- Implementação de autenticação e armazenamento seguro de senhas.
-- Ajustes e melhorias identificados durante os testes.
+- Ampliar os testes das regras de negócio e dos endpoints.
+- Configurar e validar a conexão com PostgreSQL.
+- Implementar autenticação e armazenamento seguro de senhas.
+- Realizar ajustes e melhorias identificados durante os testes.
 
 ## Status do projeto
 
-Projeto acadêmico em desenvolvimento, realizado como atividade da disciplina de Back-end, utilizando Java e Spring Boot.
+Projeto acadêmico em desenvolvimento, realizado como atividade da disciplina de Back-end, utilizando Java e Spring Boot. A aplicação já possui entidades, regras de negócio, persistência com H2 e endpoints REST para os principais recursos do sistema.
